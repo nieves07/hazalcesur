@@ -494,16 +494,30 @@
   #sp-panel iframe{display:block;width:100%;height:352px;border:0}
 
   @media (max-width:640px){
-    .topbar{padding:14px 18px}
-    .nav{gap:14px}
-    .nav a{font-size:10.5px;letter-spacing:.1em}
+    /* Mobilde GPU/CPU tüketen efektleri azalt */
+    body{background-attachment:scroll}
+    body::before{opacity:.38;filter:blur(12px);animation:none}
+    body::after{opacity:.18;animation:none}
+    .ambient-lights{display:none}
+    .topbar{padding:14px 18px;gap:12px}
+    .nav{gap:14px;max-width:72vw;overflow-x:auto;scrollbar-width:none;white-space:nowrap}
+    .nav::-webkit-scrollbar{display:none}
+    .nav a{font-size:10.5px;letter-spacing:.1em;flex:0 0 auto}
+    .topbar{backdrop-filter:blur(7px)}
     section{padding:80px 18px}
-    .hero-ring{width:400px;height:400px}
+    .hero-ring{width:400px;height:400px;animation:none}
     .c-cell{width:70px;height:70px}
     .c-cell b{font-size:22px}
+    .meter-card,.message-card,.env-body,.game-card,.reason,.memory{box-shadow:0 10px 24px rgba(0,0,0,.16)}
+    .meter-card::before,.meter-card::after,.message-card::before{display:none}
+    .game-card:hover,.reason:hover,.memory:hover{transform:none}
     #sp-panel{width:calc(100vw - 32px);right:16px;bottom:16px}
     #sp-launcher{right:16px;bottom:16px}
     .meter-card{padding:34px 20px}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
   }
 </style>
 </head>
@@ -803,6 +817,7 @@ const BASLANGIC = new Date(2023, 8, 10);  // 10 Eylül 2023 — ilişki başlang
 const AYAR_METIN = "10 Eylül 2023'ten beri";
 const SPOTIFY_URL = "https://open.spotify.com/playlist/7i0J5sDiJpki3Ju0XChjsW?flow_ctx=5e1ad676-1abf-4527-a1e6-bc027b04077b%3A1790900710";
 const PLAYLIST_ID = "7i0J5sDiJpki3Ju0XChjsW";
+const IS_MOBILE = matchMedia('(max-width: 640px)').matches;
 
 /* ============ LOCK ============ */
 const lock = document.getElementById('lock');
@@ -1154,20 +1169,23 @@ spLauncher.addEventListener('click', () => {
 
 /* ============ YÜZEN KALPLER ============ */
 function startHearts(){
+  // Mobilde daha az DOM elemanı ve daha düşük animasyon yükü.
+  const interval = IS_MOBILE ? 4200 : 1400;
+  const lifetime = IS_MOBILE ? 12000 : 18000;
   setInterval(() => {
     if (document.hidden) return;
     const h = document.createElement('span');
     h.className = 'float-heart';
     h.innerHTML = '&#9829;';
     h.style.left = Math.random() * 100 + 'vw';
-    h.style.fontSize = (12 + Math.random() * 20) + 'px';
-    h.style.animationDuration = (9 + Math.random() * 8) + 's';
+    h.style.fontSize = (IS_MOBILE ? 12 : 12 + Math.random() * 20) + 'px';
+    h.style.animationDuration = (IS_MOBILE ? 10 : 9 + Math.random() * 8) + 's';
     h.style.color = Math.random() < .5
       ? 'rgba(139,92,246,.32)'
       : 'rgba(236,72,153,.3)';
     document.body.appendChild(h);
-    setTimeout(() => h.remove(), 18000);
-  }, 1400);
+    setTimeout(() => h.remove(), lifetime);
+  }, interval);
 }
 </script>
 </body>
