@@ -44,6 +44,23 @@ body{
 body.locked{overflow:hidden;height:100vh}
 ::selection{background:var(--pink);color:#150d24}
 
+/* ============================================================
+   TEMALI KAYDIRMA ÇUBUĞU
+   ============================================================ */
+html{scrollbar-width:thin;scrollbar-color:var(--pink) rgba(21,13,36,.7)}
+html::-webkit-scrollbar{width:11px}
+html::-webkit-scrollbar-track{background:rgba(21,13,36,.78);border-left:1px solid rgba(255,255,255,.06)}
+html::-webkit-scrollbar-thumb{
+  border-radius:99px;
+  border:3px solid rgba(21,13,36,.78);
+  background:linear-gradient(180deg,var(--violet),var(--pink),var(--pink-soft));
+  box-shadow:0 0 12px rgba(255,95,158,.65);
+}
+html::-webkit-scrollbar-thumb:hover{
+  background:linear-gradient(180deg,#b78bff,var(--pink-soft),#ff4d91);
+  box-shadow:0 0 18px rgba(255,95,158,.9);
+}
+
 #petals{position:fixed;inset:0;z-index:0;pointer-events:none}
 main,#lock{position:relative;z-index:1}
 
