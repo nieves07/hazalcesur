@@ -6,553 +6,527 @@
 <title>Cesur & Hazal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --ink:#f3edff;
-    --ink-soft:#b9aecf;
-    --violet:#a78bfa;
-    --violet-deep:#c4b5fd;
-    --violet-soft:#3d2d62;
-    --violet-faint:#241b3b;
-    --rose:#f472b6;
-    --rose-deep:#f9a8d4;
-    --rose-soft:#6b3157;
-    --rose-faint:#45243f;
-    --card:#211b35;
-    --radius:22px;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    font-family:'Inter',system-ui,sans-serif;
-    color:var(--ink);
-    background:linear-gradient(160deg,#120d22 0%,#21143a 36%,#35182f 72%,#241126 100%);
-    background-attachment:fixed;
-    min-height:100vh;
-    overflow-x:hidden;
-    position:relative;
-  }
-  /* Kalplerin arkasında yavaşça hareket eden aurora ışıkları */
-  body::before{
-    content:"";
-    position:fixed;
-    inset:-25%;
-    z-index:0;
-    pointer-events:none;
-    opacity:.72;
-    background:
-      radial-gradient(ellipse at 18% 22%,rgba(139,92,246,.2),transparent 27%),
-      radial-gradient(ellipse at 82% 28%,rgba(236,72,153,.16),transparent 25%),
-      radial-gradient(ellipse at 52% 88%,rgba(59,130,246,.12),transparent 30%);
-    filter:blur(22px);
-    animation:auroraMove 18s ease-in-out infinite alternate;
-  }
-  /* İnce yıldız ve toz parıltısı dokusu */
-  body::after{
-    content:"";
-    position:fixed;
-    inset:0;
-    z-index:0;
-    pointer-events:none;
-    opacity:.32;
-    background-image:
-      radial-gradient(circle at 12% 18%,rgba(255,255,255,.8) 0 1px,transparent 1.8px),
-      radial-gradient(circle at 72% 12%,rgba(244,114,182,.7) 0 1px,transparent 1.8px),
-      radial-gradient(circle at 88% 68%,rgba(167,139,250,.75) 0 1px,transparent 1.8px),
-      radial-gradient(circle at 34% 76%,rgba(255,255,255,.55) 0 1px,transparent 1.8px),
-      radial-gradient(circle at 58% 42%,rgba(255,255,255,.45) 0 1px,transparent 1.6px);
-    background-size:240px 220px,310px 280px,270px 250px,360px 320px,190px 180px;
-    animation:starDrift 26s linear infinite;
-  }
-  @keyframes auroraMove{
-    0%{transform:translate3d(-3%,2%,0) scale(1)}
-    50%{transform:translate3d(3%,-2%,0) scale(1.06)}
-    100%{transform:translate3d(-1%,4%,0) scale(1.02)}
-  }
-  @keyframes starDrift{
-    from{transform:translateY(0);opacity:.22}
-    50%{opacity:.42}
-    to{transform:translateY(-28px);opacity:.28}
-  }
-  #site{position:relative;z-index:2}
-  body.locked{overflow:hidden;height:100vh}
-  ::selection{background:var(--violet);color:#fff}
+/* ============================================================
+   theme: gece moru + pembe — koyu romantik
+   fonts: Cormorant Garamond (serif) / Jost (sans)
+   ============================================================ */
+:root{
+  --night:#150d24;
+  --plum:#1e1233;
+  --plum-2:#271844;
+  --violet:#9d6bff;
+  --violet-deep:#6d3fe0;
+  --pink:#ff5f9e;
+  --pink-soft:#ff9ac2;
+  --blush:#ffd9e6;
+  --txt:#f4edfd;
+  --muted:#a493c4;
+  --glass:rgba(255,255,255,.055);
+  --glass-line:rgba(255,255,255,.11);
+  --radius:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Jost',system-ui,sans-serif;
+  color:var(--txt);
+  background:
+    radial-gradient(1100px 700px at 15% -5%, rgba(157,107,255,.20), transparent 60%),
+    radial-gradient(1000px 800px at 90% 15%, rgba(255,95,158,.14), transparent 55%),
+    radial-gradient(900px 900px at 50% 110%, rgba(109,63,224,.22), transparent 60%),
+    linear-gradient(180deg,#150d24 0%,#1a1030 40%,#170e29 100%);
+  background-attachment:fixed;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body.locked{overflow:hidden;height:100vh}
+::selection{background:var(--pink);color:#150d24}
 
-  /* Yuvarlak küreler yerine yumuşak, hareketli ışık şeritleri */
-  .ambient-lights{
-    position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
-    opacity:.95;
-  }
-  /* Yuvarlak parıltılar yerine çapraz, hareketli ışık izleri */
-  .ambient-lights::before,
-  .ambient-lights::after{
-    content:"";position:absolute;inset:-35%;
-    background:
-      linear-gradient(116deg,transparent 18%,rgba(167,139,250,.18) 31%,transparent 43%),
-      linear-gradient(72deg,transparent 38%,rgba(244,114,182,.14) 49%,transparent 60%),
-      linear-gradient(158deg,transparent 52%,rgba(96,165,250,.12) 61%,transparent 72%);
-    filter:blur(18px);
-    transform:rotate(-8deg) translate3d(-4%,0,0);
-    animation:lightSweep 16s ease-in-out infinite alternate;
-  }
-  .ambient-lights::after{
-    opacity:.7;transform:rotate(12deg) translate3d(5%,3%,0) scale(1.15);
-    animation-duration:22s;animation-delay:-7s;
-  }
-  @keyframes lightSweep{
-    0%{transform:rotate(-8deg) translate3d(-5%,-2%,0) scale(1)}
-    50%{transform:rotate(-4deg) translate3d(4%,3%,0) scale(1.08)}
-    100%{transform:rotate(-10deg) translate3d(-1%,6%,0) scale(1.02)}
-  }
-  .ambient-orb{
-    position:absolute;width:620px;height:46px;border-radius:999px;
-    filter:blur(20px);mix-blend-mode:screen;opacity:.22;
-    transform:rotate(var(--tilt));animation:orbFloat 18s ease-in-out infinite alternate;
-  }
-  .orb-one{
-    --tilt:-18deg;left:-10%;top:36%;
-    background:linear-gradient(90deg,transparent,rgba(167,139,250,.8),transparent);
-    animation-delay:-3s
-  }
-  .orb-two{
-    --tilt:22deg;width:460px;height:80px;right:-8%;top:22%;
-    background:linear-gradient(90deg,transparent,rgba(244,114,182,.72),transparent);
-    animation-delay:-8s
-  }
-  .orb-three{
-    --tilt:-12deg;width:430px;height:70px;right:24%;bottom:8%;
-    background:linear-gradient(90deg,transparent,rgba(96,165,250,.58),transparent);
-    animation-delay:-12s
-  }
-  @keyframes orbFloat{
-    from{transform:translate3d(-30px,18px,0) rotate(var(--tilt)) scale(.9)}
-    to{transform:translate3d(36px,-30px,0) rotate(var(--tilt)) scale(1.12)}
-  }
+#petals{position:fixed;inset:0;z-index:0;pointer-events:none}
+main,#lock{position:relative;z-index:1}
 
-  /* ---------- LOCK SCREEN ---------- */
-  #lock{
-    position:fixed;inset:0;z-index:100;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;
-    background:
-      radial-gradient(circle at 50% 38%,rgba(167,139,250,.2),transparent 25%),
-      radial-gradient(circle at 18% 82%,rgba(236,72,153,.16),transparent 28%),
-      radial-gradient(circle at 84% 15%,rgba(139,92,246,.18),transparent 25%),
-      linear-gradient(145deg,#100b20 0%,#21143d 52%,#35182f 100%);
-    transition:opacity .8s ease, visibility .8s;
-    overflow:hidden;
-  }
-  #lock::before,#lock::after{
-    content:"";position:absolute;border:1px solid rgba(244,114,182,.13);
-    border-radius:50%;pointer-events:none;animation:lockOrbit 12s linear infinite;
-  }
-  #lock::before{width:560px;height:560px;top:50%;left:50%;transform:translate(-50%,-50%)}
-  #lock::after{width:760px;height:760px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(167,139,250,.09);animation-direction:reverse;animation-duration:18s}
-  @keyframes lockOrbit{to{transform:translate(-50%,-50%) rotate(360deg)}}
-  #lock.open{opacity:0;visibility:hidden}
-  .lock-kicker{
-    position:relative;z-index:1;
-    font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--violet-deep);
-    font-weight:600;text-shadow:0 0 18px rgba(167,139,250,.55);
-  }
-  .heart-wrap{position:relative;width:230px;height:210px;display:grid;place-items:center;z-index:1}
-  .heart-wrap::before,.heart-wrap::after{
-    content:"♥";position:absolute;color:rgba(244,114,182,.45);font-size:16px;
-    animation:orbitHeart 4s ease-in-out infinite;
-  }
-  .heart-wrap::before{top:10px;left:12px}
-  .heart-wrap::after{right:8px;bottom:22px;font-size:11px;animation-delay:-2s}
-  @keyframes orbitHeart{0%,100%{transform:translateY(0) scale(.8);opacity:.35}50%{transform:translateY(-14px) scale(1.25);opacity:1}}
-  .heart-wrap svg.heart{
-    width:230px;height:210px;filter:drop-shadow(0 18px 34px rgba(139,92,246,.35)) drop-shadow(0 0 24px rgba(236,72,153,.2));
-    animation:beat 1.6s ease-in-out infinite;
-    transition:transform .5s cubic-bezier(.2,.9,.3,1.4);
-  }
-  @keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.07)}24%{transform:scale(1)}36%{transform:scale(1.045)}48%{transform:scale(1)}}
-  .heart-wrap svg.heart path{fill:url(#heartGrad)}
-  .dots{position:absolute;display:flex;gap:16px;top:50%;left:50%;transform:translate(-50%,-46%)}
-  .dot{width:13px;height:13px;border-radius:50%;background:rgba(255,255,255,.55);border:2px solid rgba(255,255,255,.9);transition:all .2s}
-  .dot.filled{background:#fff;transform:scale(1.18);box-shadow:0 0 12px rgba(255,255,255,.9)}
-  .keyhole{
-    position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);
-    width:46px;height:46px;border-radius:50%;background:#30214d;
-    display:grid;place-items:center;box-shadow:0 8px 20px rgba(109,40,217,.28);
-    opacity:0;transition:opacity .4s .1s, transform .5s;
-  }
-  #lock.open .keyhole{opacity:1;transform:translateX(-50%) rotate(90deg) scale(1.25)}
-  .pin-msg{min-height:20px;font-size:13.5px;color:var(--violet-deep);letter-spacing:.06em;font-weight:500;transition:opacity .25s;text-shadow:0 0 14px rgba(167,139,250,.5);z-index:1}
-  .keypad{display:grid;grid-template-columns:repeat(3,74px);gap:14px;z-index:1}
-  .key{
-    height:74px;border:none;border-radius:50%;cursor:pointer;
-    background:rgba(52,39,82,.88);backdrop-filter:blur(8px);
-    font-family:'Inter';font-size:23px;font-weight:500;color:var(--ink);
-    box-shadow:0 6px 16px rgba(139,92,246,.14);
-    transition:transform .12s, background .2s;
-    display:grid;place-items:center;
-  }
-  .key:hover{background:#60448d;transform:translateY(-2px)}
-  .key:active{transform:scale(.92)}
-  .key.util{font-size:13px;letter-spacing:.12em;color:var(--violet-deep);font-weight:600;    background:rgba(52,39,82,.58)}
-  .shake{animation:shake .45s}
-  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-14px)}40%{transform:translateX(12px)}60%{transform:translateX(-8px)}80%{transform:translateX(6px)}}
-  .hint{font-size:11.5px;color:#a393bd;letter-spacing:.14em;z-index:1}
-  .hint::after{content:"  •  ";color:rgba(244,114,182,.55);font-size:10px}
+/* ============================================================
+   LOCK
+   ============================================================ */
+#lock{
+  position:fixed;inset:0;z-index:100;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;
+  background:
+    radial-gradient(700px 500px at 50% 38%, rgba(157,107,255,.24), transparent 65%),
+    radial-gradient(900px 700px at 50% 110%, rgba(255,95,158,.16), transparent 60%),
+    linear-gradient(180deg,#140c22,#1b1031);
+  transition:opacity .9s ease, visibility .9s, transform .9s ease;
+}
+#lock.open{opacity:0;visibility:hidden;transform:scale(1.06)}
+.lock-kicker{
+  font-size:10.5px;letter-spacing:.55em;text-transform:uppercase;color:var(--pink-soft);
+  font-weight:400;text-indent:.55em;
+}
+.lock-sub{font-size:13px;color:var(--muted);letter-spacing:.14em;font-weight:300;margin-top:-18px}
 
-  /* burst particles */
-  .spark{position:absolute;width:9px;height:9px;border-radius:50%;background:#fff;pointer-events:none;opacity:0}
-  #lock.open .spark{animation:burst .9s ease-out forwards}
-  @keyframes burst{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.2)}}
-  #lock.open .heart-wrap svg.heart{animation:none;transform:scale(1.35) rotate(-6deg);opacity:.9}
+.heart-stage{position:relative;width:300px;height:275px;display:grid;place-items:center}
+.heart-stage::before{
+  content:"";position:absolute;width:330px;height:310px;border-radius:50%;
+  background:radial-gradient(closest-side, rgba(255,95,158,.5), rgba(157,107,255,.26) 55%, transparent 100%);
+  transition:opacity .6s;pointer-events:none;
+}
+#lock.open .heart-stage::before{opacity:0}
+.heart-stage svg{
+  position:absolute;width:300px;height:275px;
+  filter:drop-shadow(0 0 16px rgba(255,95,158,.55));
+}
+.heart-stage svg.h-l{clip-path:inset(0 50% 0 0)}
+.heart-stage svg.h-r{clip-path:inset(0 0 0 50%)}
+.heart-stage .g{animation:beat 1.7s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}14%{transform:scale(1.06)}28%{transform:scale(1)}42%{transform:scale(1.035)}56%{transform:scale(1)}}
+.heart-stage svg path{fill:url(#hg)}
+.heart-stage svg .rim{fill:none;stroke:rgba(255,255,255,.55);stroke-width:1.4;stroke-dasharray:520;stroke-dashoffset:520;animation:draw 3.4s ease-in-out infinite}
+@keyframes draw{0%{stroke-dashoffset:520}45%{stroke-dashoffset:0}55%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:-520;opacity:.15}}
 
-  /* ---------- SITE ---------- */
-  #site{opacity:0;transition:opacity 1s ease .25s}
-  #site.revealed{opacity:1}
+.dots{position:absolute;display:flex;gap:17px;top:50%;left:50%;transform:translate(-50%,-42%);z-index:3}
+.dot{
+  width:13px;height:13px;transform:rotate(45deg);
+  background:transparent;border:1.6px solid rgba(255,255,255,.75);
+  transition:all .22s;
+}
+.dot.filled{background:#fff;border-color:#fff;box-shadow:0 0 14px rgba(255,255,255,.95);transform:rotate(45deg) scale(1.14)}
+.keyhole{
+  position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);z-index:3;
+  width:48px;height:48px;border-radius:50%;
+  background:rgba(21,13,36,.92);border:1px solid rgba(255,255,255,.22);
+  display:grid;place-items:center;
+  box-shadow:0 10px 26px rgba(0,0,0,.5);
+  opacity:0;transition:opacity .5s .15s, transform .6s .15s;
+}
+#lock.open .keyhole{opacity:1;transform:translateX(-50%) rotate(90deg) scale(1.3)}
+.pin-msg{min-height:20px;font-size:13px;color:var(--pink-soft);letter-spacing:.1em;font-weight:300}
+.pin-msg.err{color:#ff7d7d}
 
-  .topbar{
-    position:fixed;top:0;left:0;right:0;z-index:40;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:18px 34px;
-    background:rgba(20,14,36,.78);backdrop-filter:blur(14px);
-    border-bottom:1px solid rgba(139,92,246,.12);
-  }
-  .logo{font-family:'Playfair Display',serif;font-size:19px;letter-spacing:.22em;color:var(--ink)}
-  .logo span{color:var(--violet)}
-  .nav{display:flex;gap:26px}
-  .nav a{
-    text-decoration:none;color:var(--ink-soft);font-size:12.5px;letter-spacing:.16em;
-    text-transform:uppercase;font-weight:500;transition:color .2s;
-  }
-  .nav a:hover{color:var(--violet-deep)}
+.keypad{display:grid;grid-template-columns:repeat(3,72px);gap:15px}
+.key{
+  height:72px;border-radius:50%;cursor:pointer;
+  background:rgba(255,255,255,.05);border:1px solid var(--glass-line);
+  backdrop-filter:blur(10px);
+  font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;color:var(--txt);
+  transition:transform .14s, background .22s, box-shadow .22s;
+}
+.key:hover{background:rgba(157,107,255,.22);box-shadow:0 0 22px rgba(157,107,255,.35);transform:translateY(-2px)}
+.key:active{transform:scale(.92)}
+.key.util{
+  font-family:'Jost';font-size:12px;letter-spacing:.16em;color:var(--pink-soft);
+  background:rgba(255,95,158,.08);border-color:rgba(255,95,158,.3);
+}
+.key.util:hover{background:rgba(255,95,158,.2);box-shadow:0 0 22px rgba(255,95,158,.35)}
+.shake{animation:shake .5s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-15px)}40%{transform:translateX(13px)}60%{transform:translateX(-8px)}80%{transform:translateX(5px)}}
+.hint{font-size:11px;color:#7d6ba0;letter-spacing:.18em}
 
-  section{padding:110px 24px;position:relative}
-  .inner{max-width:1060px;margin:0 auto}
+/* unlock split + petals */
+#lock.open .heart-stage svg.h-l{animation:splitL 1s cubic-bezier(.5,0,.2,1) forwards}
+#lock.open .heart-stage svg.h-r{animation:splitR 1s cubic-bezier(.5,0,.2,1) forwards}
+#lock.open .heart-stage .g{animation:none}
+@keyframes splitL{to{transform:translateX(-170px) rotate(-24deg);opacity:0}}
+@keyframes splitR{to{transform:translateX(170px) rotate(24deg);opacity:0}}
+.burst{position:absolute;width:8px;height:8px;border-radius:50%;pointer-events:none;opacity:0}
+#lock.open .burst{animation:burst .95s ease-out forwards}
+@keyframes burst{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.15)}}
 
-  /* HERO */
-  .hero{
-    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;padding-top:90px;
-    background:radial-gradient(ellipse at 50% 30%,#2b2148 0%,transparent 68%);
-  }
-  .hero-ring{
-    position:absolute;width:640px;height:640px;border-radius:50%;
-    border:1px solid rgba(139,92,246,.16);top:50%;left:50%;transform:translate(-50%,-54%);
-    pointer-events:none;
-  }
-  .hero-ring::after{
-    content:"";position:absolute;inset:70px;border-radius:50%;
-    border:1px solid rgba(139,92,246,.1);
-  }
-  .kicker{font-size:11px;letter-spacing:.5em;text-transform:uppercase;color:var(--rose);font-weight:600;margin-bottom:26px}
-  .names h1{
-    font-family:'Playfair Display',serif;font-weight:500;
-    font-size:clamp(48px,8vw,84px);line-height:1.04;letter-spacing:.01em;
-  }
-  .amp{display:block;font-family:'Playfair Display',serif;font-style:italic;color:var(--rose);font-size:.55em;margin:6px 0}
-  .n-cesur{color:var(--violet-deep)}
-  .n-hazal{color:var(--rose-deep)}
-  .since{margin-top:26px;font-size:13.5px;color:var(--ink-soft);letter-spacing:.18em}
-  .counter{display:flex;gap:14px;margin-top:44px;flex-wrap:wrap;justify-content:center}
-  .c-cell{
-    width:86px;height:86px;border-radius:50%;
-    background:rgba(47,35,75,.78);border:1px solid rgba(167,139,250,.28);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    box-shadow:0 8px 22px rgba(139,92,246,.1);
-  }
-  .c-cell b{font-family:'Playfair Display',serif;font-size:27px;font-weight:600;line-height:1;color:var(--ink)}
-  .c-cell small{font-size:8.5px;letter-spacing:.2em;color:var(--violet-deep);margin-top:7px;text-transform:uppercase}
-  .scroll-cue{margin-top:56px;color:var(--violet);font-size:20px;animation:bob 2s ease-in-out infinite;text-decoration:none}
-  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(9px)}}
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 38px;
+  background:rgba(21,13,36,.55);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.logo{font-family:'Cormorant Garamond',serif;font-size:21px;letter-spacing:.3em;color:var(--txt)}
+.logo i{font-style:normal;color:var(--pink);text-shadow:0 0 14px rgba(255,95,158,.7)}
+.nav{display:flex;gap:30px}
+.nav a{
+  text-decoration:none;color:var(--muted);font-size:11.5px;letter-spacing:.22em;
+  text-transform:uppercase;font-weight:400;transition:color .25s, text-shadow .25s;
+}
+.nav a:hover{color:var(--blush);text-shadow:0 0 12px rgba(255,154,194,.6)}
 
-  /* section titles */
-  .sec-title{font-family:'Playfair Display',serif;font-size:clamp(30px,4.5vw,44px);font-weight:500;text-align:center}
-  .sec-sub{text-align:center;color:var(--ink-soft);font-size:14px;margin-top:12px;letter-spacing:.06em}
+/* ============================================================
+   SHARED
+   ============================================================ */
+section{padding:130px 24px;position:relative}
+.inner{max-width:1080px;margin:0 auto}
+.kicker{
+  font-size:10.5px;letter-spacing:.5em;text-transform:uppercase;color:var(--pink-soft);
+  text-align:center;text-indent:.5em;font-weight:400;
+}
+.sec-title{
+  font-family:'Cormorant Garamond',serif;font-weight:400;text-align:center;
+  font-size:clamp(34px,5vw,52px);margin-top:16px;letter-spacing:.02em;
+}
+.sec-title em{font-style:italic;color:var(--pink-soft)}
+.sec-sub{text-align:center;color:var(--muted);font-size:14px;margin-top:12px;letter-spacing:.08em;font-weight:300}
+.hair{
+  width:64px;height:1px;margin:26px auto 0;
+  background:linear-gradient(90deg,transparent,var(--pink),transparent);
+}
 
-  /* LOVE METER */
-  .meter-card{
-    margin-top:48px;background:var(--card);border:1px solid rgba(139,92,246,.22);
-    border-radius:var(--radius);padding:44px 40px 38px;
-    box-shadow:0 24px 60px rgba(139,92,246,.14),inset 0 1px 0 rgba(255,255,255,.04);
-    display:flex;flex-direction:column;align-items:center;gap:26px;
-    position:relative;overflow:hidden;isolation:isolate;
-    transition:box-shadow .45s,border-color .45s,transform .45s;
-  }
-  .meter-card::before{
-    content:"";position:absolute;inset:-2px;z-index:-1;opacity:.35;
-    background:radial-gradient(circle at 50% 25%,rgba(236,72,153,.32),transparent 42%);
-    transition:opacity .45s,transform .45s;
-  }
-  .meter-card::after{
-    content:"♥  ♥  ♥";position:absolute;top:18px;right:24px;
-    color:rgba(244,114,182,.2);font-size:13px;letter-spacing:10px;
-    animation:meterSparkle 3s ease-in-out infinite;
-  }
-  .meter-card.overflowing{border-color:rgba(244,114,182,.62);box-shadow:0 0 0 1px rgba(244,114,182,.12),0 24px 75px rgba(236,72,153,.28),inset 0 1px 0 rgba(255,255,255,.08)}
-  .meter-card.overflowing::before{opacity:.8;transform:scale(1.25)}
-  @keyframes meterSparkle{0%,100%{opacity:.35;transform:translateY(0)}50%{opacity:1;transform:translateY(-5px)}}
-  .meter-heart{width:74px;height:66px;transition:transform .25s,filter .35s;filter:drop-shadow(0 0 5px rgba(236,72,153,.35))}
-  .meter-heart.beat{animation:meterBeat .65s ease}
-  @keyframes meterBeat{0%,100%{filter:drop-shadow(0 0 5px rgba(236,72,153,.35))}35%{filter:drop-shadow(0 0 24px rgba(244,114,182,.95))}55%{filter:drop-shadow(0 0 9px rgba(167,139,250,.65))}}
-  .meter-heart path{fill:url(#heartGrad)}
-  .meter-pct{font-family:'Playfair Display',serif;font-size:56px;color:var(--violet-deep);line-height:1;transition:color .35s,text-shadow .35s}
-  .meter-pct.hot{color:var(--rose-deep);text-shadow:0 0 22px rgba(244,114,182,.48)}
-  .meter-label{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);min-height:18px;text-align:center;transition:color .35s}
-  .meter-status{font-size:11px;color:var(--rose-deep);letter-spacing:.16em;text-transform:uppercase;min-height:16px;opacity:.8}
-  .slider-row{width:100%;max-width:520px;display:flex;align-items:center;gap:16px}
-  .slider-row span{font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;white-space:nowrap}
-  input[type=range]{
-    -webkit-appearance:none;appearance:none;flex:1;height:10px;border-radius:99px;outline:none;
-    background:linear-gradient(90deg,#8b5cf6 0%,#ec4899 50%,#49365d 50%,#49365d 100%);
-  }
-  input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none;width:26px;height:26px;border-radius:50%;
-    background:#fff;border:3px solid var(--rose);cursor:grab;
-    box-shadow:0 4px 12px rgba(139,92,246,.4);
-  }
-  input[type=range]::-moz-range-thumb{
-    width:26px;height:26px;border-radius:50%;background:#fff;
-    border:3px solid var(--rose);cursor:grab;box-shadow:0 4px 12px rgba(139,92,246,.4);
-  }
-  .meter-note{font-size:12px;color:#a393bd;letter-spacing:.08em}
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s ease, transform .9s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:none}
 
-  /* RANDOM LOVE MESSAGE */
-  .message-card{
-    margin:48px auto 0;max-width:680px;text-align:center;
-    background:linear-gradient(145deg,rgba(43,33,72,.96),rgba(53,24,47,.96));
-    border:1px solid rgba(244,114,182,.28);border-radius:var(--radius);
-    padding:42px 30px 34px;box-shadow:0 22px 55px rgba(139,92,246,.16);
-    position:relative;overflow:hidden;
-  }
-  .message-card::before{content:"♥  ✦  ♥";position:absolute;top:16px;right:22px;color:rgba(244,114,182,.22);letter-spacing:9px;font-size:13px}
-  .message-icon{font-size:42px;color:var(--rose-deep);filter:drop-shadow(0 0 12px rgba(244,114,182,.55));animation:messageHeart 1.8s ease-in-out infinite}
-  @keyframes messageHeart{0%,100%{transform:scale(1)}50%{transform:scale(1.12)} }
-  .message-text{min-height:92px;margin:22px auto 24px;max-width:540px;display:grid;place-items:center;font-family:'Playfair Display',serif;font-size:clamp(20px,3vw,27px);line-height:1.55;color:#f5edff;transition:opacity .25s,transform .25s}
-  .message-text.changing{opacity:0;transform:translateY(8px)}
-  .message-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-  .message-copy{background:rgba(167,139,250,.14);color:var(--violet-deep);border:1px solid rgba(167,139,250,.28)}
-  .message-copy.copied{color:#bbf7d0;border-color:#4ade80}
-  .message-hint{margin-top:18px;color:#a393bd;font-size:11px;letter-spacing:.08em}
-  .message-spark{position:absolute;pointer-events:none;color:var(--rose-deep);font-size:18px;animation:messageSpark .8s ease-out forwards}
-  @keyframes messageSpark{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--mx),var(--my)) scale(.4)}}
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding-top:110px;
+}
+.halo{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-56%);
+  width:min(720px,92vw);aspect-ratio:1;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle, rgba(255,95,158,.16) 0%, rgba(157,107,255,.10) 45%, transparent 70%);
+  animation:halo 6s ease-in-out infinite;
+}
+@keyframes halo{0%,100%{transform:translate(-50%,-56%) scale(1);opacity:.85}50%{transform:translate(-50%,-56%) scale(1.07);opacity:1}}
+.ring{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-56%);
+  width:min(560px,86vw);aspect-ratio:1;border-radius:50%;pointer-events:none;
+  border:1px solid rgba(255,255,255,.09);
+}
+.ring::after{content:"";position:absolute;inset:56px;border-radius:50%;border:1px solid rgba(255,255,255,.055)}
+.ring::before{
+  content:"♥";position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  color:var(--pink);font-size:17px;text-shadow:0 0 16px rgba(255,95,158,.9);
+}
 
-  /* LETTER */
-  .envelope{
-    margin:48px auto 0;max-width:620px;position:relative;cursor:pointer;
-    perspective:1200px;
-  }
-  .env-body{
-    background:linear-gradient(150deg,#2b2148 0%,#3a1f39 100%);
-    border:1px solid rgba(167,139,250,.28);border-radius:16px;
-    padding:46px 42px;box-shadow:0 22px 55px rgba(139,92,246,.16);
-    position:relative;overflow:hidden;
-  }
-  .env-body::before{
-    content:"";position:absolute;top:0;left:0;right:0;height:6px;
-    background:repeating-linear-gradient(45deg,#8b5cf6 0 12px,#ec4899 12px 24px);
-    opacity:.7;
-  }
-  .env-open-hint{
-    text-align:center;font-size:12px;letter-spacing:.24em;text-transform:uppercase;
-    color:var(--violet-deep);margin-top:18px;font-weight:600;
-  }
-  .letter-text{
-    font-family:'Playfair Display',serif;font-size:17.5px;line-height:1.95;color:#eee6ff;
-    max-height:0;opacity:0;overflow:hidden;transition:max-height .9s ease, opacity .7s ease .2s, margin .9s;
-  }
-  .envelope.open .letter-text{max-height:640px;opacity:1;margin-top:26px}
-  .letter-sign{display:block;text-align:right;margin-top:22px;font-style:italic;color:var(--violet-deep)}
-  .seal{
-    width:58px;height:58px;border-radius:50%;
-    background:linear-gradient(135deg,#8b5cf6 0%,#ec4899 100%);
-    color:#fff;display:grid;place-items:center;margin:0 auto;
-    font-family:'Playfair Display',serif;font-size:22px;
-    box-shadow:0 8px 18px rgba(109,40,217,.4);
-    transition:transform .5s;
-  }
-  .envelope.open .seal{transform:rotate(180deg) scale(.9);background:linear-gradient(135deg,#ec4899 0%,#6d28d9 100%)}
+.names{font-family:'Cormorant Garamond',serif;font-weight:300;line-height:1.02}
+.names .n1,.names .n2{display:block;font-size:clamp(54px,9.5vw,110px);letter-spacing:.01em}
+.names .n1{
+  background:linear-gradient(100deg,#c9b1ff 0%,#9d6bff 60%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.names .n2{
+  background:linear-gradient(100deg,#ff9ac2 0%,#ff5f9e 65%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.names .amp{
+  display:block;font-style:italic;font-size:clamp(26px,3.4vw,44px);margin:2px 0;color:var(--blush);
+  opacity:.9;text-shadow:0 0 24px rgba(255,154,194,.6);
+}
+.since{margin-top:30px;font-size:12.5px;color:var(--muted);letter-spacing:.3em;text-transform:uppercase}
 
-  /* MINI GAMES */
-  .game-grid{margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-  .game-card{background:rgba(33,27,53,.94);border:1px solid rgba(167,139,250,.22);border-radius:20px;padding:28px 24px;box-shadow:0 18px 44px rgba(0,0,0,.18);text-align:center}
-  .game-icon{width:54px;height:54px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-size:28px;font-weight:600;box-shadow:0 8px 20px rgba(139,92,246,.28)}
-  .game-card h3{font-family:'Playfair Display',serif;font-size:23px;color:var(--violet-deep);margin-bottom:9px}
-  .game-card p{font-size:13.5px;line-height:1.65;color:var(--ink-soft);min-height:45px}
-  .game-stats{display:flex;justify-content:center;gap:28px;margin:20px 0 12px;color:var(--ink-soft);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
-  .game-stats b{color:var(--rose-deep);font-size:16px}
-  .heart-arena{height:170px;margin:12px 0 16px;border:1px dashed rgba(244,114,182,.35);border-radius:15px;position:relative;overflow:hidden;background:radial-gradient(circle at center,rgba(139,92,246,.16),transparent 70%);transition:border-color .3s,box-shadow .3s}
-  .heart-arena.active{border-color:rgba(244,114,182,.8);box-shadow:inset 0 0 28px rgba(236,72,153,.16),0 0 18px rgba(139,92,246,.12)}
-  .arena-message{position:absolute;inset:0;display:grid;place-items:center;color:var(--ink-soft);font-size:13px;animation:softPulse 2s ease-in-out infinite}
-  .target-heart{position:absolute;border:0;background:none;color:var(--rose-deep);font-size:29px;cursor:pointer;line-height:1;filter:drop-shadow(0 0 10px rgba(244,114,182,.6));animation:targetPop .2s ease-out;transition:transform .15s,color .2s}
-  .target-heart:hover{transform:scale(1.3) rotate(-8deg);color:#fff}
-  .target-heart:active{transform:scale(.7)}
-  @keyframes softPulse{0%,100%{opacity:.65}50%{opacity:1}}
-  .game-card{transition:transform .3s,border-color .3s,box-shadow .3s}
-  .game-card:hover{transform:translateY(-5px);border-color:rgba(244,114,182,.45);box-shadow:0 22px 48px rgba(139,92,246,.2)}
-  .game-icon{transition:transform .3s,box-shadow .3s}
-  .game-card:hover .game-icon{transform:rotate(-8deg) scale(1.08);box-shadow:0 0 28px rgba(236,72,153,.45)}
-  .game-result.success{animation:resultPop .35s ease;color:#f9a8d4}
-  @keyframes resultPop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
-  .choice-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:22px 0 12px}
-  .choice-heart{height:48px;border:1px solid rgba(244,114,182,.28);border-radius:12px;background:rgba(167,139,250,.1);color:var(--rose-deep);font-size:22px;cursor:pointer;transition:transform .15s,background .2s,box-shadow .2s}
-  .choice-heart:hover{transform:translateY(-3px);background:rgba(236,72,153,.2)}
-  .choice-heart.active{background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;box-shadow:0 0 16px rgba(236,72,153,.5);transform:scale(1.05)}
-  .reaction-area{min-height:112px;margin:20px 0 14px;border-radius:15px;display:grid;place-items:center;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);color:var(--ink-soft);font-size:13px;transition:background .25s,transform .2s}
-  .reaction-area.ready{background:rgba(244,114,182,.18);color:#fff;cursor:pointer;animation:readyGlow .8s ease-in-out infinite alternate}
-  .reaction-area.go{background:linear-gradient(135deg,#22c55e,#15803d);color:#fff;transform:scale(1.02);cursor:pointer}
-  @keyframes readyGlow{from{box-shadow:0 0 4px rgba(244,114,182,.2)}to{box-shadow:0 0 24px rgba(244,114,182,.7)}}
-  @keyframes targetPop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
-  @keyframes targetPop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
-  .game-button,.quiz-options button{border:0;border-radius:99px;padding:11px 18px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font:600 12px 'Inter';letter-spacing:.08em;cursor:pointer;transition:transform .2s,filter .2s}
-  .game-button:hover,.quiz-options button:hover{transform:translateY(-2px);filter:brightness(1.12)}
-  .game-button.secondary{margin-top:18px;background:rgba(167,139,250,.16);color:var(--violet-deep);border:1px solid rgba(167,139,250,.25)}
-  .game-result{min-height:22px;margin-top:12px;font-size:13px;color:var(--rose-deep)}
-  .quiz-options{display:grid;gap:10px;margin-top:24px}
-  .quiz-options button{background:rgba(167,139,250,.13);border:1px solid rgba(167,139,250,.25);color:var(--ink);width:100%;font-weight:500;letter-spacing:.02em}
-  .quiz-options button.correct{background:rgba(34,197,94,.22);border-color:#4ade80;color:#bbf7d0}
-  .quiz-options button.wrong{background:rgba(244,63,94,.2);border-color:#fb7185;color:#fecdd3}
+.counter{display:flex;gap:13px;margin-top:52px;flex-wrap:wrap;justify-content:center}
+.c-cell{
+  min-width:94px;padding:20px 8px 16px;border-radius:16px;
+  background:var(--glass);border:1px solid var(--glass-line);
+  backdrop-filter:blur(12px);position:relative;overflow:hidden;
+  transition:border-color .3s, box-shadow .3s;
+}
+.c-cell:hover{border-color:rgba(255,95,158,.5);box-shadow:0 0 26px rgba(255,95,158,.18)}
+.c-cell::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,95,158,.7),transparent);
+}
+.c-cell b{
+  display:block;font-family:'Cormorant Garamond',serif;font-weight:500;
+  font-size:34px;line-height:1;color:var(--txt);
+}
+.c-cell small{
+  display:block;font-size:8.5px;letter-spacing:.28em;color:var(--pink-soft);
+  margin-top:10px;text-transform:uppercase;
+}
+.scroll-cue{
+  margin-top:70px;display:flex;flex-direction:column;align-items:center;gap:10px;
+  color:var(--muted);text-decoration:none;font-size:10px;letter-spacing:.32em;text-transform:uppercase;
+}
+.scroll-cue .line{width:1px;height:52px;background:linear-gradient(180deg,var(--pink),transparent);animation:drip 2s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(.3);transform-origin:top;opacity:.4}55%{transform:scaleY(1);opacity:1}100%{transform:scaleY(.3);transform-origin:bottom;opacity:.4}}
 
-  /* REASONS */
-  .reason-grid{
-    margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;
-  }
-  .reason{
-    background:rgba(33,27,53,.92);border:1px solid rgba(167,139,250,.2);border-radius:18px;
-    padding:28px 24px;transition:transform .25s, box-shadow .25s;
-    position:relative;overflow:hidden;
-  }
-  .reason:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(139,92,246,.16)}
-  .reason b{
-    font-family:'Playfair Display',serif;font-size:15px;color:var(--violet-deep);
-    display:block;margin-bottom:10px;letter-spacing:.1em;
-  }
-  .reason p{font-size:14.5px;line-height:1.7;color:var(--ink-soft)}
+/* ============================================================
+   AŞK ÖLÇER
+   ============================================================ */
+.meter-card{
+  margin-top:54px;padding:56px 44px 46px;border-radius:28px;text-align:center;
+  background:linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
+  border:1px solid var(--glass-line);
+  backdrop-filter:blur(14px);
+  box-shadow:0 30px 70px rgba(0,0,0,.35);
+  position:relative;overflow:hidden;
+}
+.meter-card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(500px 240px at 50% 0%, rgba(255,95,158,.14), transparent 70%);
+  pointer-events:none;
+}
+.meter-heart{width:80px;height:72px;transition:transform .25s;filter:drop-shadow(0 0 14px rgba(255,95,158,.7))}
+.meter-heart path{fill:url(#hg2)}
+.meter-pct{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
+  font-size:84px;line-height:1;margin-top:14px;
+  background:linear-gradient(100deg,#c9b1ff,#ff9ac2);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.meter-label{font-size:12.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);min-height:18px;margin-top:14px}
+.slider-row{display:flex;align-items:center;gap:18px;margin-top:40px}
+.slider-row span{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#7d6ba0;white-space:nowrap}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;flex:1;height:6px;border-radius:99px;outline:none;
+  background:linear-gradient(90deg,#9d6bff 0%,#ff5f9e 50%,rgba(255,255,255,.12) 50%,rgba(255,255,255,.12) 100%);
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:28px;height:28px;border-radius:50%;cursor:grab;
+  background:radial-gradient(circle at 35% 30%, #fff, #ff9ac2 55%, #ff5f9e);
+  border:2px solid rgba(255,255,255,.85);
+  box-shadow:0 0 22px rgba(255,95,158,.8), 0 4px 12px rgba(0,0,0,.4);
+}
+input[type=range]::-moz-range-thumb{
+  width:28px;height:28px;border-radius:50%;cursor:grab;
+  background:radial-gradient(circle at 35% 30%, #fff, #ff9ac2 55%, #ff5f9e);
+  border:2px solid rgba(255,255,255,.85);
+  box-shadow:0 0 22px rgba(255,95,158,.8);
+}
+.meter-note{font-size:12px;color:#7d6ba0;letter-spacing:.1em;margin-top:26px;transition:color .3s}
+.meter-note.max{color:var(--pink-soft);font-weight:500}
 
-  /* DIGITAL MEMORIES */
-  .memory-grid{
-    margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;
-  }
-  .memory{
-    min-height:190px;padding:28px 24px;border-radius:18px;
-    background:linear-gradient(145deg,rgba(43,33,72,.95),rgba(53,24,47,.95));
-    border:1px solid rgba(244,114,182,.2);box-shadow:0 16px 38px rgba(0,0,0,.18);
-    transition:transform .25s,border-color .25s;
-  }
-  .memory:hover{transform:translateY(-6px);border-color:rgba(244,114,182,.5)}
-  .memory-icon{font-size:28px;color:var(--rose-deep);margin-bottom:18px}
-  .memory b{display:block;font-family:'Playfair Display',serif;font-size:18px;color:var(--violet-deep);margin-bottom:10px}
-  .memory p{font-size:14px;line-height:1.7;color:var(--ink-soft)}
+/* ============================================================
+   MEKTUP
+   ============================================================ */
+.envelope{
+  max-width:640px;margin:56px auto 0;cursor:pointer;position:relative;
+  perspective:1000px;
+  filter:drop-shadow(0 30px 60px rgba(0,0,0,.45));
+}
+.env-body{
+  background:linear-gradient(165deg,#241641 0%,#1c1132 100%);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:6px 6px 18px 18px;
+  padding:0 44px 44px;position:relative;min-height:104px;
+}
+.env-body::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:56%;
+  background:linear-gradient(180deg, rgba(157,107,255,.07), rgba(255,95,158,.05));
+  clip-path:polygon(0 100%, 50% 0, 100% 100%);
+  pointer-events:none;opacity:.8;transition:opacity .6s;
+}
+.envelope.open .env-body::after{opacity:0}
+.flap{
+  height:118px;position:relative;z-index:3;
+  background:linear-gradient(180deg,#2e1c50,#241641);
+  clip-path:polygon(0 0, 100% 0, 50% 100%);
+  border-radius:6px 6px 0 0;
+  transform-origin:top center;transition:transform .85s cubic-bezier(.4,0,.2,1);
+  backface-visibility:hidden;
+}
+.envelope.open .flap{transform:rotateX(180deg);z-index:1}
+.seal{
+  position:absolute;top:78px;left:50%;transform:translateX(-50%);z-index:5;
+  width:60px;height:60px;border-radius:50%;
+  background:radial-gradient(circle at 32% 28%, #ff9ac2, #ff5f9e 55%, #d63d7f);
+  color:#2a0f1d;display:grid;place-items:center;
+  font-family:'Cormorant Garamond',serif;font-size:19px;letter-spacing:.06em;
+  box-shadow:0 10px 26px rgba(255,95,158,.5);
+  transition:transform .6s, opacity .5s;
+}
+.envelope.open .seal{transform:translateX(-50%) rotate(180deg) scale(.6);opacity:0}
+.letter-holder{
+  max-height:0;overflow:hidden;opacity:0;
+  transition:max-height 1s ease, opacity .7s ease .3s;
+}
+.envelope.open .letter-holder{max-height:760px;opacity:1}
+.letter{
+  padding-top:38px;
+  font-family:'Cormorant Garamond',serif;font-size:19px;line-height:2.05;color:#e9ddff;
+}
+.letter p+p{margin-top:20px}
+.letter .sign{display:block;text-align:right;margin-top:26px;font-style:italic;color:var(--pink-soft);font-size:21px}
+.env-hint{
+  text-align:center;margin-top:20px;font-size:10.5px;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--pink-soft);
+}
 
-  /* FOOTER */
-  footer{
-    text-align:center;padding:70px 24px 120px;
-    background:linear-gradient(180deg,transparent,rgba(15,10,28,.55));
-  }
-  .foot-names{font-family:'Playfair Display',serif;font-size:30px;letter-spacing:.14em}
-  .foot-names i{color:var(--rose);font-style:normal}
-  .foot-note{margin-top:14px;font-size:12px;letter-spacing:.2em;color:var(--ink-soft);text-transform:uppercase}
+/* ============================================================
+   SEBEPLER
+   ============================================================ */
+.reason-grid{margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.reason{
+  background:var(--glass);border:1px solid var(--glass-line);border-radius:var(--radius);
+  padding:32px 26px;position:relative;overflow:hidden;
+  transition:transform .3s, border-color .3s, box-shadow .3s;
+}
+.reason::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(157,107,255,.8),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.reason:hover{transform:translateY(-8px);border-color:rgba(255,95,158,.4);box-shadow:0 22px 44px rgba(0,0,0,.4)}
+.reason:hover::before{opacity:1}
+.reason b{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
+  font-size:34px;color:rgba(255,154,194,.65);display:block;margin-bottom:14px;
+}
+.reason p{font-size:14.5px;line-height:1.75;color:#cbbde4;font-weight:300}
 
-  /* FLOATING HEARTS */
-  .float-heart{
-    position:fixed;bottom:-40px;pointer-events:none;z-index:1;
-    color:rgba(139,92,246,.28);animation:rise linear forwards;
-  }
-  @keyframes rise{
-    0%{transform:translateY(0) rotate(0);opacity:0}
-    12%{opacity:1}
-    100%{transform:translateY(-110vh) rotate(340deg);opacity:0}
-  }
+/* ============================================================
+   EK ÖZELLİKLER
+   ============================================================ */
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:56px}
+.feature-card{padding:30px 26px;border-radius:var(--radius);background:var(--glass);border:1px solid var(--glass-line);text-align:center;box-shadow:0 20px 45px rgba(0,0,0,.22)}
+.feature-card h3{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;color:var(--blush);margin-bottom:12px}
+.feature-card p{color:var(--muted);font-size:13px;line-height:1.7}
+.word-scramble{font-size:32px;letter-spacing:.22em;color:var(--pink-soft);margin:18px 0;font-weight:500}
+.word-input{width:100%;padding:13px 16px;border-radius:99px;border:1px solid var(--glass-line);background:rgba(255,255,255,.06);color:var(--txt);text-align:center;font:400 15px 'Jost';outline:none}
+.feature-btn{margin-top:14px;padding:11px 20px;border:1px solid rgba(255,95,158,.45);border-radius:99px;background:rgba(255,95,158,.1);color:var(--blush);cursor:pointer;font:400 11px 'Jost';letter-spacing:.12em;text-transform:uppercase}
+.feature-btn:hover{background:rgba(255,95,158,.24)}
+.feature-result{min-height:22px;margin-top:14px;color:var(--pink-soft);font-size:13px}
+.lucky-heart{font-size:68px;display:inline-block;color:var(--pink);cursor:pointer;filter:drop-shadow(0 0 18px rgba(255,95,158,.7));transition:transform .2s}
+.lucky-heart:hover{transform:scale(1.12)}
+.daily-message{font-family:'Cormorant Garamond',serif;font-size:23px;line-height:1.4;color:#e9ddff;min-height:68px;display:grid;place-items:center}
+.timeline{max-width:760px;margin:56px auto 0;display:grid;gap:16px}
+.timeline-item{display:grid;grid-template-columns:110px 1fr;gap:22px;align-items:start;padding:20px;border-left:1px solid var(--pink);background:rgba(255,255,255,.035);border-radius:0 16px 16px 0}
+.timeline-item time{color:var(--pink-soft);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.timeline-item h3{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:400;color:var(--blush)}
+.timeline-item p{margin-top:5px;color:#cbbde4;font-size:13.5px;line-height:1.65}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:56px}
+.gallery figure{margin:0;aspect-ratio:1;overflow:hidden;border-radius:16px;border:1px solid var(--glass-line);background:linear-gradient(135deg,rgba(157,107,255,.32),rgba(255,95,158,.25));display:grid;place-items:center;cursor:pointer;position:relative}
+.gallery figure::after{content:'♥';font-size:45px;color:rgba(255,255,255,.72);text-shadow:0 0 20px rgba(255,95,158,.8)}
+.gallery figcaption{position:absolute;bottom:0;left:0;right:0;padding:10px;background:rgba(21,13,36,.72);font-size:11px;letter-spacing:.08em;color:var(--blush)}
+@media (max-width:640px){.nav{overflow-x:auto;max-width:70vw;padding-bottom:3px}.timeline-item{grid-template-columns:1fr;gap:7px}.gallery{grid-template-columns:repeat(2,1fr)}}
 
-  /* SPOTIFY WIDGET */
-  #sp-launcher{
-    position:fixed;right:22px;bottom:22px;z-index:62;
-    display:flex;align-items:center;gap:10px;
-    background:#121212;color:#fff;border:none;cursor:pointer;
-    padding:13px 20px;border-radius:99px;
-    font-family:'Inter';font-size:13px;font-weight:600;letter-spacing:.06em;
-    box-shadow:0 14px 34px rgba(0,0,0,.32);
-    transition:transform .2s, opacity .3s;
-  }
-  #sp-launcher:hover{transform:translateY(-3px)}
-  #sp-launcher.hidden{opacity:0;pointer-events:none;transform:translateY(20px)}
-  #sp-panel{
-    position:fixed;right:22px;bottom:22px;z-index:61;width:340px;
-    background:#121212;border-radius:16px;overflow:hidden;
-    box-shadow:0 24px 60px rgba(0,0,0,.45);
-    transform:translateY(30px) scale(.96);opacity:0;pointer-events:none;
-    transition:transform .35s cubic-bezier(.2,.9,.3,1.2), opacity .3s;
-  }
-  #sp-panel.open{transform:none;opacity:1;pointer-events:auto}
-  .sp-head{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:13px 16px;background:#181818;color:#fff;
-  }
-  .sp-head b{font-size:13.5px;font-weight:600;letter-spacing:.04em}
-  .sp-head button{
-    background:none;border:none;color:#b3b3b3;cursor:pointer;font-size:17px;line-height:1;
-    padding:2px 5px;transition:color .2s;
-  }
-  .sp-head button:hover{color:#fff}
-  #sp-panel iframe{display:block;width:100%;height:352px;border:0}
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{text-align:center;padding:90px 24px 130px;position:relative}
+.foot-heart{
+  font-size:26px;color:var(--pink);display:inline-block;
+  animation:beat 1.7s ease-in-out infinite;
+  text-shadow:0 0 22px rgba(255,95,158,.8);
+}
+.foot-names{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,40px);
+  letter-spacing:.14em;margin-top:18px;font-weight:300;
+}
+.foot-names i{font-style:normal;color:var(--pink)}
+  .foot-note{margin-top:16px;font-size:10.5px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
 
-  @media (max-width:640px){
-    /* Mobilde GPU/CPU tüketen efektleri azalt */
-    body{background-attachment:scroll}
-    body::before{opacity:.38;filter:blur(12px);animation:none}
-    body::after{opacity:.18;animation:none}
-    .ambient-lights{display:none}
-    .topbar{padding:14px 18px;gap:12px}
-    .nav{gap:14px;max-width:72vw;overflow-x:auto;scrollbar-width:none;white-space:nowrap}
-    .nav::-webkit-scrollbar{display:none}
-    .nav a{font-size:10.5px;letter-spacing:.1em;flex:0 0 auto}
-    .topbar{backdrop-filter:blur(7px)}
-    section{padding:80px 18px}
-    .hero-ring{width:400px;height:400px;animation:none}
-    .c-cell{width:70px;height:70px}
-    .c-cell b{font-size:22px}
-    .meter-card,.message-card,.env-body,.game-card,.reason,.memory{box-shadow:0 10px 24px rgba(0,0,0,.16)}
-    .meter-card::before,.meter-card::after,.message-card::before{display:none}
-    .game-card:hover,.reason:hover,.memory:hover{transform:none}
-    #sp-panel{width:calc(100vw - 32px);right:16px;bottom:16px}
-    #sp-launcher{right:16px;bottom:16px}
-    .meter-card{padding:34px 20px}
-  }
+/* ============================================================
+   QUIZ
+   ============================================================ */
+.quiz-card{
+  max-width:680px;margin:56px auto 0;padding:42px 34px;border-radius:28px;
+  background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.025));
+  border:1px solid var(--glass-line);backdrop-filter:blur(14px);
+  box-shadow:0 30px 70px rgba(0,0,0,.35);text-align:center;
+}
+.quiz-progress{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--pink-soft)}
+.quiz-question{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;line-height:1.25;margin:20px 0 26px;color:var(--txt)}
+.quiz-options{display:grid;gap:12px}
+.quiz-option{
+  width:100%;padding:15px 18px;border-radius:12px;cursor:pointer;
+  background:rgba(255,255,255,.045);border:1px solid var(--glass-line);
+  color:#e9ddff;font:300 14px 'Jost',sans-serif;transition:background .25s,border-color .25s,transform .2s;
+}
+.quiz-option:hover{background:rgba(255,95,158,.14);border-color:rgba(255,95,158,.5);transform:translateY(-2px)}
+.quiz-option.correct{background:rgba(83,208,151,.18);border-color:#53d097;color:#baffdd}
+.quiz-option.wrong{background:rgba(255,92,116,.16);border-color:#ff7d8d;color:#ffd1d7}
+.quiz-result{min-height:24px;margin-top:22px;color:var(--pink-soft);font-size:13px;letter-spacing:.08em}
+.quiz-restart{margin-top:20px;padding:12px 24px;border:1px solid rgba(255,95,158,.45);border-radius:99px;background:rgba(255,95,158,.1);color:var(--blush);cursor:pointer;font:400 11px 'Jost';letter-spacing:.18em;text-transform:uppercase}
+.quiz-restart:hover{background:rgba(255,95,158,.22)}
+@media (max-width:640px){.quiz-card{padding:34px 20px}.quiz-question{font-size:26px}}
 
-  @media (prefers-reduced-motion: reduce){
-    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
-  }
+/* ============================================================
+   SPOTIFY
+   ============================================================ */
+#sp-launcher{
+  position:fixed;right:24px;bottom:24px;z-index:60;
+  display:flex;align-items:center;gap:11px;
+  background:rgba(21,13,36,.9);color:#fff;border:1px solid rgba(255,255,255,.16);
+  cursor:pointer;padding:14px 22px;border-radius:99px;
+  font-family:'Jost';font-size:13px;font-weight:400;letter-spacing:.14em;
+  backdrop-filter:blur(12px);
+  box-shadow:0 16px 40px rgba(0,0,0,.55);
+  transition:transform .22s, box-shadow .22s, opacity .3s;
+}
+#sp-launcher:hover{transform:translateY(-3px);box-shadow:0 0 30px rgba(255,95,158,.45)}
+#sp-launcher.hidden{opacity:0;pointer-events:none;transform:translateY(24px)}
+#sp-panel{
+  position:fixed;right:24px;bottom:24px;z-index:61;width:350px;
+  background:#0d0818;border:1px solid rgba(255,255,255,.14);
+  border-radius:18px;overflow:hidden;
+  box-shadow:0 30px 70px rgba(0,0,0,.65);
+  transform:translateY(34px) scale(.95);opacity:0;pointer-events:none;
+  transition:transform .4s cubic-bezier(.2,.9,.3,1.2), opacity .32s;
+}
+#sp-panel.open{transform:none;opacity:1;pointer-events:auto}
+.sp-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:15px 18px;background:rgba(255,255,255,.04);
+}
+.sp-head b{font-size:13px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--blush)}
+.sp-head button{
+  background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;
+  padding:2px 6px;transition:color .2s;
+}
+.sp-head button:hover{color:#fff}
+#sp-panel iframe{display:block;width:100%;height:352px;border:0}
+
+@media (max-width:640px){
+  .topbar{padding:15px 18px}
+  .nav{gap:16px}
+  .nav a{font-size:9.5px;letter-spacing:.14em}
+  section{padding:90px 18px}
+  .keypad{grid-template-columns:repeat(3,64px);gap:12px}
+  .key{height:64px}
+  .heart-stage{transform:scale(.86)}
+  .c-cell{min-width:74px;padding:15px 6px 12px}
+  .c-cell b{font-size:26px}
+  .meter-card{padding:40px 20px 36px}
+  .meter-pct{font-size:64px}
+  .env-body{padding:0 24px 32px}
+  .letter{font-size:17px}
+  #sp-panel{width:calc(100vw - 32px);right:16px;bottom:16px}
+  #sp-launcher{right:16px;bottom:16px}
+}
 </style>
 </head>
 <body class="locked">
 
-<!-- Arka plan ışık küreleri -->
-<div class="ambient-lights" aria-hidden="true">
-  <span class="ambient-orb orb-one"></span>
-  <span class="ambient-orb orb-two"></span>
-  <span class="ambient-orb orb-three"></span>
-</div>
-
-<!-- shared gradient defs -->
+<!-- gradients -->
 <svg width="0" height="0" style="position:absolute">
   <defs>
-    <linearGradient id="heartGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#a78bfa"/>
-      <stop offset="100%" stop-color="#ec4899"/>
+    <linearGradient id="hg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#b78bff"/>
+      <stop offset="55%" stop-color="#ff5f9e"/>
+      <stop offset="100%" stop-color="#ff9ac2"/>
+    </linearGradient>
+    <linearGradient id="hg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#9d6bff"/>
+      <stop offset="100%" stop-color="#ff5f9e"/>
     </linearGradient>
   </defs>
 </svg>
 
+<canvas id="petals"></canvas>
+
 <!-- ================= LOCK ================= -->
 <div id="lock">
   <div class="lock-kicker">Kalbimin Kilidi</div>
+  <div class="lock-sub">sadece senin kodun açar</div>
 
-  <div class="heart-wrap">
-    <svg class="heart" viewBox="0 0 100 90">
+  <div class="heart-stage" id="heartStage">
+    <svg class="h-l g" viewBox="-10 -10 120 110">
       <path d="M50 88 C20 66 2 48 2 28 C2 12 14 2 28 2 C38 2 46 8 50 17 C54 8 62 2 72 2 C86 2 98 12 98 28 C98 48 80 66 50 88 Z"/>
+      <path class="rim" d="M50 88 C20 66 2 48 2 28 C2 12 14 2 28 2 C38 2 46 8 50 17 C54 8 62 2 72 2 C86 2 98 12 98 28 C98 48 80 66 50 88 Z"/>
+    </svg>
+    <svg class="h-r g" viewBox="-10 -10 120 110">
+      <path d="M50 88 C20 66 2 48 2 28 C2 12 14 2 28 2 C38 2 46 8 50 17 C54 8 62 2 72 2 C86 2 98 12 98 28 C98 48 80 66 50 88 Z"/>
+      <path class="rim" d="M50 88 C20 66 2 48 2 28 C2 12 14 2 28 2 C38 2 46 8 50 17 C54 8 62 2 72 2 C86 2 98 12 98 28 C98 48 80 66 50 88 Z"/>
     </svg>
     <div class="dots">
       <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
     </div>
     <div class="keyhole">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2.2" stroke-linecap="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff9ac2" stroke-width="2" stroke-linecap="round">
         <circle cx="8" cy="8" r="5"/><path d="M11.5 11.5 L20 20 M17 17 L15 19 M20 20 L18 22"/>
       </svg>
     </div>
@@ -575,35 +549,41 @@
     <button class="key util" data-k="del">&#9003;</button>
   </div>
 
-  <div class="hint">ipucu:</div>
+  <div class="hint">ipucu: en sevdiğimiz ayın ilk günü</div>
 </div>
 
 <!-- ================= SITE ================= -->
 <main id="site">
 
   <div class="topbar">
-    <div class="logo">C <span>&</span> H</div>
+    <div class="logo">C <i>&#9829;</i> H</div>
     <nav class="nav">
       <a href="#biz">Biz</a>
       <a href="#olcum">Aşk Ölçer</a>
-      <a href="#mesaj">Mesaj</a>
       <a href="#mektup">Mektup</a>
-      <a href="#oyunlar">Oyunlar</a>
-      <a href="#sebep">Sebepler</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#kelime">Kelime Bul</a>
       <a href="#anilar">Anılar</a>
+      <a href="#sebep">Sebepler</a>
     </nav>
   </div>
 
   <!-- HERO -->
   <section class="hero" id="biz">
-    <div class="hero-ring"></div>
-    <div class="kicker">Bizim Hikayemiz</div>
-    <div class="names">
-      <h1><span class="n-cesur">Cesur</span><span class="amp">&amp;</span><span class="n-hazal">Hazal</span></h1>
-    </div>
-    <div class="since" id="sinceLine">14 Şubat 2024'ten beri</div>
+    <div class="halo"></div>
+    <div class="ring"></div>
 
-    <div class="counter">
+    <div class="kicker reveal">Bizim Hikayemiz</div>
+
+    <div class="names reveal" style="margin-top:34px">
+      <span class="n1">Cesur</span>
+      <span class="amp">&amp;</span>
+      <span class="n2">Hazal</span>
+    </div>
+
+    <div class="since reveal" id="sinceLine">14 Şubat 2024'ten beri</div>
+
+    <div class="counter reveal">
       <div class="c-cell"><b id="cY">0</b><small>Yıl</small></div>
       <div class="c-cell"><b id="cM">0</b><small>Ay</small></div>
       <div class="c-cell"><b id="cD">0</b><small>Gün</small></div>
@@ -612,21 +592,25 @@
       <div class="c-cell"><b id="cSec">0</b><small>Saniye</small></div>
     </div>
 
+    <a href="#olcum" class="scroll-cue reveal"><span>keşfet</span><span class="line"></span></a>
   </section>
 
-  <!-- LOVE METER -->
+  <!-- AŞK ÖLÇER -->
   <section id="olcum">
     <div class="inner">
-      <h2 class="sec-title">Aşk Ölçer</h2>
-      <p class="sec-sub">Seviyeni kaydır, kalbim ne hissediyor görsün</p>
+      <div class="reveal">
+        <div class="kicker">kalp nabzı</div>
+        <h2 class="sec-title">Aşk <em>Ölçer</em></h2>
+        <p class="sec-sub">seviyeni kaydır, nabzımı dinle</p>
+        <div class="hair"></div>
+      </div>
 
-      <div class="meter-card">
+      <div class="meter-card reveal">
         <svg class="meter-heart" id="meterHeart" viewBox="0 0 100 90">
           <path d="M50 88 C20 66 2 48 2 28 C2 12 14 2 28 2 C38 2 46 8 50 17 C54 8 62 2 72 2 C86 2 98 12 98 28 C98 48 80 66 50 88 Z"/>
         </svg>
-        <div class="meter-pct" id="meterPct">0%</div>
-        <div class="meter-label" id="meterLabel">soğuk musun, hâlâ burada mıyız</div>
-        <div class="meter-status" id="meterStatus">kalp bağlantısı kuruluyor...</div>
+        <div class="meter-pct" id="meterPct">50%</div>
+        <div class="meter-label" id="meterLabel">tam ortadayız, dengedeyiz</div>
         <div class="slider-row">
           <span>soğuk</span>
           <input type="range" id="meterRange" min="0" max="100" value="0">
@@ -637,194 +621,151 @@
     </div>
   </section>
 
-  <!-- RANDOM LOVE MESSAGE -->
-  <section id="mesaj">
-    <div class="inner">
-      <h2 class="sec-title">Sana Küçük Bir Mesaj</h2>
-      <p class="sec-sub">Bakalım bugün kalbim sana ne söylemek istiyor</p>
-
-      <div class="message-card" id="messageCard">
-        <div class="message-icon">♥</div>
-        <div class="message-text" id="messageText">Seninle konuşmak, günümün en güzel kısmı.</div>
-        <div class="message-actions">
-          <button class="game-button" id="newMessage">Yeni Mesaj</button>
-          <button class="game-button message-copy" id="copyMessage">Mesajı Kopyala</button>
-        </div>
-        <div class="message-hint" id="messageHint">Kalbinden gelen bir cümle daha görmek için tıkla ✦</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- LETTER -->
+  <!-- MEKTUP -->
   <section id="mektup">
     <div class="inner">
-      <h2 class="sec-title">Sana Bir Mektup</h2>
-      <p class="sec-sub">Mühürü kır, gerisi senin</p>
+      <div class="reveal">
+        <div class="kicker">mühürlü</div>
+        <h2 class="sec-title">Sana Bir <em>Mektup</em></h2>
+        <p class="sec-sub">mührü kır, gerisi senin</p>
+        <div class="hair"></div>
+      </div>
 
-      <div class="envelope" id="envelope">
+      <div class="envelope reveal" id="envelope">
+        <div class="flap"></div>
+        <div class="seal">C&amp;H</div>
         <div class="env-body">
-          <div class="seal">C&amp;H</div>
-          <div class="letter-text">
-            Hazal,
-            <br><br>
-            Bu siteyi açmak için kalbimin kodunu bilmen gerekiyordu. Belki aramızda ekranlar ve
-            kilometreler var ama senin mesajın geldiğinde telefonumun ışığı bütün odamı aydınlatıyor.
-            <br><br>
-            Senin attığın her ses kaydı ve gelen her "napıyosun?"
-            mesajı bizim küçük ama gerçek anımız. Birlikte oyun
-            oynamak ve ekranın iki ucunda gülmek bile seninle yan yana hissettiriyor.
-            <br><br>
-            Bir gün bu mesajların yerini aynı alanda edilen sohbetlerin alacağına inanıyorum. O güne
-            kadar bu sayfa bizim dijital köşemiz olsun; sayaç burada işlemeye, kalbim de sana bağlanmaya
-            devam etsin.
-            <br><br>
-            Seni seviyorum. Bunu sadece klavyede yazmak yetmiyor ama şimdilik sana ulaşan her harfe
-            kalbimden bir parça bırakıyorum. Kalp kilidini de senin kodunla açtırdım.
-            <span class="letter-sign">— Cesur</span>
+          <div class="letter-holder">
+            <div class="letter">
+              <p>Hazal,</p>
+              <p>Bu siteyi açmak için kalbimin kodunu bilmen gerekiyordu. Belki aramızda ekranlar ve kilometreler var ama senin mesajın geldiğinde telefonumun ışığı bütün odamı aydınlatıyor.</p>
+              <p>Senin attığın her ses kaydı ve gelen her "napıyosun?" mesajı bizim küçük ama gerçek anımız. Birlikte oyun oynamak ve ekranın iki ucunda gülmek bile seninle yan yana hissettiriyor.</p>
+              <p>Bir gün bu mesajların yerini aynı alanda edilen sohbetlerin alacağına inanıyorum. O güne kadar bu sayfa bizim dijital köşemiz olsun; sayaç burada işlemeye, kalbim de sana bağlanmaya devam etsin.</p>
+              <p>Seni seviyorum. Bunu sadece klavyede yazmak yetmiyor ama şimdilik sana ulaşan her harfe kalbimden bir parça bırakıyorum. Kalp kilidini de senin kodunla açtırdım.</p>
+              <span class="sign">— Cesur</span>
+            </div>
           </div>
         </div>
-        <div class="env-open-hint" id="envHint">mühürü aç</div>
       </div>
+      <div class="env-hint" id="envHint">mührü aç</div>
     </div>
   </section>
 
-  <!-- MINI GAMES -->
-  <section id="oyunlar">
+  <!-- QUIZ -->
+  <section id="quiz">
     <div class="inner">
-      <h2 class="sec-title">Bizim Mini Oyunlarımız</h2>
-      <p class="sec-sub">Biraz eğlenelim, bakalım kalbimi ne kadar iyi tanıyorsun</p>
+      <div class="reveal">
+        <div class="kicker">küçük bir test</div>
+        <h2 class="sec-title">Beni Ne Kadar <em>Tanıyorsun?</em></h2>
+        <p class="sec-sub">cevaplarını seç, kalbime ne kadar yakın olduğunu gör</p>
+        <div class="hair"></div>
+      </div>
 
-      <div class="game-grid">
-        <div class="game-card">
-          <div class="game-icon">♥</div>
-          <h3>Kalbi Yakala</h3>
-          <p>Kalp ekranda belirdiğinde üzerine tıkla. 20 saniyede kaç kalp yakalayabilirsin?</p>
-          <div class="game-stats"><span>Skor: <b id="heartScore">0</b></span><span>Süre: <b id="heartTime">20</b></span></div>
-          <div class="heart-arena" id="heartArena"><span class="arena-message">Hazırsan başla 💜</span></div>
-          <button class="game-button" id="heartStart">Oyunu Başlat</button>
-          <div class="game-result" id="heartResult"></div>
-        </div>
-
-        <div class="game-card">
-          <div class="game-icon">?</div>
-          <h3>Beni Ne Kadar Tanıyorsun?</h3>
-          <p id="quizQuestion">İkimizin birlikte en sevdiği şey nedir?</p>
-          <div class="quiz-options" id="quizOptions">
-            <button data-answer="wrong">Sessizce beklemek</button>
-            <button data-answer="correct">Birlikte oyun oynamak</button>
-            <button data-answer="wrong">Sadece hava durumunu konuşmak</button>
-          </div>
-          <div class="game-result" id="quizResult"></div>
-          <button class="game-button secondary" id="quizReset">Tekrar Dene</button>
-        </div>
-
-        <div class="game-card">
-          <div class="game-icon">♥</div>
-          <h3>Kalbimi Tahmin Et</h3>
-          <p>Kalbimin bugün kaç puanlık sevgiyle dolu olduğunu tahmin et.</p>
-          <div class="choice-grid" id="loveChoices">
-            <button class="choice-heart" data-value="25">♥</button>
-            <button class="choice-heart" data-value="50">♥</button>
-            <button class="choice-heart" data-value="75">♥</button>
-            <button class="choice-heart" data-value="100">♥</button>
-          </div>
-          <button class="game-button" id="loveGuess">Tahmin Et</button>
-          <div class="game-result" id="loveResult"></div>
-        </div>
-
+      <div class="quiz-card reveal" id="quizCard">
+        <div class="quiz-progress" id="quizProgress">Soru 1 / 5</div>
+        <div class="quiz-question" id="quizQuestion"></div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <div class="quiz-result" id="quizResult"></div>
+        <button class="quiz-restart" id="quizRestart" hidden>Tekrar Oyna</button>
       </div>
     </div>
   </section>
 
-  <!-- REASONS -->
-  <section id="sebep">
+  <!-- EK OYUNLAR VE ANILAR -->
+  <section id="kelime">
     <div class="inner">
-      <h2 class="sec-title">Seni Sevmemin Sebepleri</h2>
-      <p class="sec-sub">ekranın arkasında olsan da kalbime çok yakınsın</p>
-
-      <div class="reason-grid">
-        <div class="reason"><b>01</b><p>Bildirim ekranımda adını görmek. Günün en güzel sürprizi, mesafe tanımayan küçük bir kalp atışı.</p></div>
-        <div class="reason"><b>02</b><p>Mesajlarını beklemek. Üç nokta belirdiğinde bile içimde kocaman bir heyecan başlıyor.</p></div>
-        <div class="reason"><b>03</b><p>Sesini duymak ve görüntülü aramada yüzünü görmek. Ekran küçücük, hissettirdiklerin kocaman.</p></div>
-        <div class="reason"><b>04</b><p>Gece attığın “uyudun mu?” mesajı. Aynı anda aynı şeyi düşünüyormuşuz gibi hissettiriyor.</p></div>
-        <div class="reason"><b>05</b><p>Birlikte izlediğimiz filmler, oynadığımız oyunlar ve paylaştığımız şarkılar. Sanal ama anılarımız gerçek.</p></div>
-        <div class="reason"><b>06</b><p>Yoğun günümde gönderdiğin tek bir mesaj. Yanımda olamasan da beni yalnız bırakmıyorsun.</p></div>
-        <div class="reason"><b>07</b><p>Aramızdaki kilometrelere rağmen kurduğumuz bağ. Bazen en yakın hissettiğim kişi ekranın diğer tarafında.</p></div>
-        <div class="reason"><b>08</b><p>Bir gün aynı yerde olacağımız hayali. Şimdilik sanal olan sevgimiz, geleceğimizi gerçek kılıyor.</p></div>
+      <div class="reveal"><div class="kicker">küçük bir oyun</div><h2 class="sec-title">Aşk <em>Kelimesini Bul</em></h2><p class="sec-sub">harfleri doğru sıraya koy</p><div class="hair"></div></div>
+      <div class="feature-grid">
+        <div class="feature-card reveal">
+          <h3>Karışık Kalp</h3><div class="word-scramble" id="wordScramble">KALP</div>
+          <input class="word-input" id="wordInput" type="text" placeholder="Kelimeyi yaz" autocomplete="off">
+          <button class="feature-btn" id="wordCheck">Kontrol Et</button><div class="feature-result" id="wordResult"></div>
+        </div>
+        <div class="feature-card reveal">
+          <h3>Şanslı Kalp</h3><div class="lucky-heart" id="luckyHeart" role="button" tabindex="0">♥</div>
+          <p>Kalbe dokun, sana özel bir mesajını keşfet.</p><div class="feature-result" id="luckyResult"></div>
+        </div>
+        <div class="feature-card reveal">
+          <h3>Günün Mesajı</h3><div class="daily-message" id="dailyMessage"></div>
+          <p>Bugünün küçük hatırlatması.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- DIGITAL MEMORIES -->
   <section id="anilar">
     <div class="inner">
-      <h2 class="sec-title">Dijital Anılarımız</h2>
-      <p class="sec-sub">Aynı yerde olmasak da birlikte biriktirdiğimiz küçük anlar</p>
-
-      <div class="memory-grid">
-        <div class="memory">
-          <div class="memory-icon">&#128172;</div>
-          <b>İlk Mesajımız</b>
-          <p>Bir bildirimle başlayan sohbetimizin, bugün kocaman bir hikâyeye dönüşmesi.</p>
-        </div>
-        <div class="memory">
-          <div class="memory-icon">&#127909;</div>
-          <b>Ekran Paylaşımı</b>
-          <p>Aynı filmi izleyip aynı sahnede gülmek; aramızdaki mesafeyi birkaç dakikalığına unutmak.</p>
-        </div>
-        <div class="memory">
-          <div class="memory-icon">&#127918;</div>
-          <b>Birlikte Oyun</b>
-          <p>Ekranın iki ucunda takım olmak, kaybetsek bile birlikte eğlenmek.</p>
-        </div>
-        <div class="memory">
-          <div class="memory-icon">&#127925;</div>
-          <b>Ortak Şarkımız</b>
-          <p>Çaldığında aklımıza birbirimizin geldiği, kilometreleri sessizce aşan şarkımız.</p>
-        </div>
+      <div class="reveal"><div class="kicker">bizim hikâyemiz</div><h2 class="sec-title">Anılar <em>Zaman Çizelgesi</em></h2><p class="sec-sub">birlikte yazdığımız güzel başlangıçlar</p><div class="hair"></div></div>
+      <div class="timeline">
+        <article class="timeline-item reveal"><time>10 Eylül 2023</time><div><h3>İlk sayfamız</h3><p>Kalplerimizin aynı hikâyede buluştuğu güzel başlangıç.</p></div></article>
+        <article class="timeline-item reveal"><time>İlk mesaj</time><div><h3>Üç noktanın heyecanı</h3><p>Bir mesajla başlayan, her gün büyüyen küçük mutluluklarımız.</p></div></article>
+        <article class="timeline-item reveal"><time>Bugün</time><div><h3>Hikâyemiz devam ediyor</h3><p>Mesafeler olsa da kalplerimiz aynı yerde atmaya devam ediyor.</p></div></article>
+      </div>
+      <div class="gallery">
+        <figure class="reveal" tabindex="0"><figcaption>Birlikte güzel anlar</figcaption></figure>
+        <figure class="reveal" tabindex="0"><figcaption>Kalbimin en güzel köşesi</figcaption></figure>
+        <figure class="reveal" tabindex="0"><figcaption>Gelecek güzel günlere</figcaption></figure>
       </div>
     </div>
   </section>
 
-  <footer>
+  <!-- SEBEPLER -->
+  <section id="sebep">
+    <div class="inner">
+      <div class="reveal">
+        <div class="kicker">liste uzuyor</div>
+        <h2 class="sec-title">Seni Sevmemin <em>Sebepleri</em></h2>
+        <p class="sec-sub">her gün yeni madde ekleniyor</p>
+        <div class="hair"></div>
+      </div>
+
+            <div class="reason-grid">
+        <div class="reason reveal"><b>01</b><p>Bildirim ekranımda adını görmek. Günün en güzel sürprizi, mesafe tanımayan küçük bir kalp atışı.</p></div>
+        <div class="reason reveal"><b>02</b><p>Mesajlarını beklemek. Üç nokta belirdiğinde bile içimde kocaman bir heyecan başlıyor.</p></div>
+        <div class="reason reveal"><b>03</b><p>Sesini duymak ve görüntülü aramada yüzünü görmek. Ekran küçücük, hissettirdiklerin kocaman.</p></div>
+        <div class="reason reveal"><b>04</b><p>Gece attığın “uyudun mu?” mesajı. Aynı anda aynı şeyi düşünüyormuşuz gibi hissettiriyor.</p></div>
+        <div class="reason reveal"><b>05</b><p>Birlikte izlediğimiz filmler, oynadığımız oyunlar ve paylaştığımız şarkılar. Sanal ama anılarımız gerçek.</p></div>
+        <div class="reason reveal"><b>06</b><p>Yoğun günümde gönderdiğin tek bir mesaj. Yanımda olamasan da beni yalnız bırakmıyorsun.</p></div>
+        <div class="reason reveal"><b>07</b><p>Aramızdaki kilometrelere rağmen kurduğumuz bağ. Bazen en yakın hissettiğim kişi ekranın diğer tarafında.</p></div>
+        <div class="reason reveal"><b>08</b><p>Bir gün aynı yerde olacağımız hayali. Şimdilik sanal olan sevgimiz, geleceğimizi gerçek kılıyor.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="reveal">
+    <div class="foot-heart">&#9829;</div>
     <div class="foot-names">Cesur <i>&#9829;</i> Hazal</div>
     <div class="foot-note" id="footNote">her gün yeniden yazılıyor</div>
   </footer>
 </main>
 
 <!-- ================= SPOTIFY ================= -->
-<button id="sp-launcher" class="hidden" type="button" aria-label="Spotify'yi aç">
-  <span aria-hidden="true">♫</span> Playlist'i Aç
+<button id="sp-launcher">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="#1ed760"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.6 14.4a.75.75 0 01-1.03.25c-2.82-1.72-6.37-2.11-10.55-1.16a.75.75 0 11-.33-1.46c4.56-1.04 8.49-.59 11.66 1.34.35.22.46.68.25 1.03zm1.23-2.74a.94.94 0 01-1.29.31c-3.23-1.98-8.15-2.56-11.97-1.4a.94.94 0 11-.54-1.8c4.36-1.31 9.78-.67 13.49 1.6.44.27.58.85.31 1.29zm.11-2.86C14.07 8.55 7.7 8.34 4.4 9.34a1.12 1.12 0 11-.65-2.15c3.79-1.15 10.82-.93 15.09 1.61a1.12 1.12 0 11-1.14 1.93z"/></svg>
+  Playlist
 </button>
 
-<div id="sp-panel" class="open">
+<div id="sp-panel">
   <div class="sp-head">
-    <b>Listemiz</b>
+    <b>Şarkılarımız</b>
     <button id="sp-close" aria-label="kapat">&#10005;</button>
   </div>
-  <iframe id="sp-frame" data-testid="embed-iframe"
-    style="border-radius:12px"
-    src="https://open.spotify.com/embed/playlist/7i0J5sDiJpki3Ju0XChjsW?theme=0"
-    width="100%" height="352" frameborder="0" allowfullscreen=""
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-    title="Spotify Çalma Listesi"></iframe>
+  <iframe id="sp-frame" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Spotify Çalma Listesi"></iframe>
 </div>
 
 <script>
 /* ============ AYARLAR ============ */
-const PIN = "1312";                       // kalp kodu — istediğinle değiştir
-const BASLANGIC = new Date(2023, 8, 10);  // 10 Eylül 2023 — ilişki başlangıcı
+const PIN = "1312";                       // kalp kodu
+const BASLANGIC = new Date(2023, 8, 10);  // yıl, ay(0-11), gün
 const AYAR_METIN = "10 Eylül 2023'ten beri";
-const SPOTIFY_URL = "https://open.spotify.com/playlist/7i0J5sDiJpki3Ju0XChjsW?flow_ctx=5e1ad676-1abf-4527-a1e6-bc027b04077b%3A1790900710";
-const PLAYLIST_ID = "7i0J5sDiJpki3Ju0XChjsW";
-const IS_MOBILE = matchMedia('(max-width: 640px)').matches;
+const SPOTIFY_URL = "https://open.spotify.com/embed/playlist/7i0J5sDiJpki3Ju0XChjsW?utm_source=generator&theme=0";
 
 /* ============ LOCK ============ */
 const lock = document.getElementById('lock');
 const site = document.getElementById('site');
 const pinMsg = document.getElementById('pinMsg');
 const dots = [...document.querySelectorAll('.dot')];
-const heartWrap = document.querySelector('.heart-wrap');
+const heartStage = document.getElementById('heartStage');
 let entered = "";
 
 document.getElementById('sinceLine').textContent = AYAR_METIN;
@@ -834,17 +775,12 @@ document.getElementById('keypad').addEventListener('click', e => {
   const btn = e.target.closest('.key');
   if (!btn) return;
   const k = btn.dataset.k;
-
   if (k === 'clear') { entered = ""; render(); return; }
   if (k === 'del')   { entered = entered.slice(0, -1); render(); return; }
   if (entered.length >= 4) return;
-
   entered += k;
   render();
-
-  if (entered.length === 4) {
-    setTimeout(check, 180);
-  }
+  if (entered.length === 4) setTimeout(check, 200);
 });
 
 function render(){
@@ -852,31 +788,32 @@ function render(){
 }
 
 function check(){
-  if (entered === PIN) {
-    unlock();
-  } else {
-    pinMsg.textContent = "kalp açılmadı, tekrar dene";
-    pinMsg.style.opacity = 1;
-    heartWrap.classList.remove('shake');
-    void heartWrap.offsetWidth;
-    heartWrap.classList.add('shake');
-    entered = "";
-    render();
-    setTimeout(() => pinMsg.textContent = "4 haneli kalp kodunu gir", 1600);
-  }
+  if (entered === PIN) { unlock(); return; }
+  pinMsg.textContent = "kalp açılmadı, tekrar dene";
+  pinMsg.classList.add('err');
+  heartStage.classList.remove('shake');
+  void heartStage.offsetWidth;
+  heartStage.classList.add('shake');
+  entered = ""; render();
+  setTimeout(() => {
+    pinMsg.textContent = "4 haneli kalp kodunu gir";
+    pinMsg.classList.remove('err');
+  }, 1700);
 }
 
 function unlock(){
-  // kıvılcım patlaması
-  for (let i = 0; i < 16; i++) {
+  const colors = ['#ff5f9e', '#9d6bff', '#ff9ac2', '#c9b1ff'];
+  for (let i = 0; i < 22; i++) {
     const s = document.createElement('span');
-    s.className = 'spark';
-    const a = (Math.PI * 2 * i) / 16;
-    const r = 90 + Math.random() * 70;
+    s.className = 'burst';
+    const a = (Math.PI * 2 * i) / 22;
+    const r = 100 + Math.random() * 90;
     s.style.setProperty('--tx', Math.cos(a) * r + 'px');
     s.style.setProperty('--ty', Math.sin(a) * r + 'px');
-    s.style.left = '50%'; s.style.top = '50%';
-    heartWrap.appendChild(s);
+    s.style.left = '50%'; s.style.top = '46%';
+    s.style.background = colors[i % colors.length];
+    s.style.boxShadow = `0 0 10px ${colors[i % colors.length]}`;
+    heartStage.appendChild(s);
   }
   pinMsg.textContent = "açıldı";
   lock.classList.add('open');
@@ -884,23 +821,24 @@ function unlock(){
   setTimeout(() => {
     lock.style.display = 'none';
     site.classList.add('revealed');
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    startHearts();
+    revealInit();
   }, 950);
 }
 
-// klavye desteği
 window.addEventListener('keydown', e => {
   if (lock.style.display === 'none') return;
   if (/^[0-9]$/.test(e.key)) {
-    if (entered.length < 4) { entered += e.key; render(); if (entered.length === 4) setTimeout(check, 180); }
+    if (entered.length < 4) {
+      entered += e.key; render();
+      if (entered.length === 4) setTimeout(check, 200);
+    }
   } else if (e.key === 'Backspace') {
     entered = entered.slice(0, -1); render();
   }
 });
 
 /* ============ SAYAÇ ============ */
-function pad(n){ return String(n).padStart(2, '0'); }
+const pad = n => String(n).padStart(2, '0');
 
 function tickCounter(){
   const now = new Date();
@@ -915,8 +853,8 @@ function tickCounter(){
   const h = Math.floor(ms / 3600000); ms -= h * 3600000;
   const mi = Math.floor(ms / 60000);  ms -= mi * 60000;
   const s = Math.floor(ms / 1000);
-  const oncesi = now < BASLANGIC;
 
+  const oncesi = now < BASLANGIC;
   document.getElementById('cY').textContent   = oncesi ? 0 : y;
   document.getElementById('cM').textContent   = oncesi ? 0 : mo;
   document.getElementById('cD').textContent   = oncesi ? 0 : d;
@@ -933,8 +871,6 @@ const pct = document.getElementById('meterPct');
 const label = document.getElementById('meterLabel');
 const note = document.getElementById('meterNote');
 const meterHeart = document.getElementById('meterHeart');
-const meterCard = document.querySelector('.meter-card');
-const meterStatus = document.getElementById('meterStatus');
 
 const esikler = [
   [0,   "soğuk musun, hâlâ burada mıyız"],
@@ -952,241 +888,270 @@ const esikler = [
 function updateMeter(){
   const v = +range.value;
   pct.textContent = v + '%';
-  pct.classList.toggle('hot', v >= 75);
-  meterCard.classList.toggle('overflowing', v >= 95);
-  meterStatus.textContent = v === 0 ? 'kalp bağlantısı kuruluyor...' : v < 40 ? 'sinyal zayıf ama umut var...' : v < 75 ? 'kalp bağlantısı güçleniyor...' : v < 100 ? 'kalp ritmi hızlandı!' : 'kalp tamamen sana ait ♥';
-  meterHeart.classList.remove('beat');
-  void meterHeart.offsetWidth;
-  meterHeart.classList.add('beat');
   range.style.background =
-    `linear-gradient(90deg, #8b5cf6 0%, #ec4899 ${v}%, #49365d ${v}%, #49365d 100%)`;
+    `linear-gradient(90deg, #9d6bff 0%, #ff5f9e ${v}%, rgba(255,255,255,.12) ${v}%, rgba(255,255,255,.12) 100%)`;
 
   let text = esikler[0][1];
   for (const [t, s] of esikler) if (v >= t) text = s;
   label.textContent = text;
 
-  meterHeart.style.transform = `scale(${1 + v / 220}) rotate(${(v - 50) / 25}deg)`;
-  meterHeart.style.filter = v >= 95 ? 'drop-shadow(0 0 18px rgba(139,92,246,.85))' : 'none';
+  meterHeart.style.transform = `scale(${1 + v / 190}) rotate(${(v - 50) / 24}deg)`;
+  meterHeart.style.filter = v >= 95
+    ? 'drop-shadow(0 0 20px rgba(255,95,158,.95))'
+    : 'drop-shadow(0 0 14px rgba(255,95,158,.7))';
 
   if (v >= 100) {
     note.textContent = "gördün mü, kalp tamamen senin";
-    note.style.color = "var(--rose-deep)";
-    note.style.fontWeight = "600";
+    note.classList.add('max');
   } else {
     note.textContent = "%100'e çekersen bir şey olacak";
-    note.style.color = "#a393bd";
-    note.style.fontWeight = "400";
+    note.classList.remove('max');
   }
 }
 range.addEventListener('input', updateMeter);
 updateMeter();
-
-/* ============ RASTGELE AŞK MESAJI ============ */
-const loveMessages = [
-  'Mesafeler sadece haritada var; kalbimde sana hep çok yakınım.',
-  'Telefonumda adını görmek, günümün en güzel sürprizi.',
-  'Seninle konuştuğum her dakika, sıradan bir günü anıya dönüştürüyor.',
-  'Gülüşün ekranın içinden bile kalbime kadar ulaşabiliyor.',
-  'İyi ki varsın; hayatımda olduğun için her şey biraz daha güzel.',
-  'Seni sevmenin en güzel yanı, bunu her gün yeniden hissetmek.',
-  'Bir gün yan yana olacağımızı düşünmek bile yüzümde kocaman bir gülümseme oluşturuyor.',
-  'Sen benim en sevdiğim bildirim, en güzel tesadüf ve en özel hikâyemsin.'
-];
-const messageCard = document.getElementById('messageCard');
-const messageText = document.getElementById('messageText');
-const newMessage = document.getElementById('newMessage');
-const copyMessage = document.getElementById('copyMessage');
-const messageHint = document.getElementById('messageHint');
-let lastMessage = 0;
-
-function createMessageSparks(){
-  for (let i = 0; i < 12; i++) {
-    const spark = document.createElement('span');
-    spark.className = 'message-spark';
-    spark.textContent = i % 2 ? '✦' : '♥';
-    spark.style.left = '50%';
-    spark.style.top = '42%';
-    const angle = (Math.PI * 2 * i) / 12;
-    const distance = 70 + Math.random() * 100;
-    spark.style.setProperty('--mx', `${Math.cos(angle) * distance}px`);
-    spark.style.setProperty('--my', `${Math.sin(angle) * distance}px`);
-    messageCard.appendChild(spark);
-    setTimeout(() => spark.remove(), 850);
-  }
-}
-
-newMessage.addEventListener('click', () => {
-  let next;
-  do { next = Math.floor(Math.random() * loveMessages.length); } while (next === lastMessage && loveMessages.length > 1);
-  lastMessage = next;
-  messageText.classList.add('changing');
-  createMessageSparks();
-  setTimeout(() => {
-    messageText.textContent = loveMessages[next];
-    messageText.classList.remove('changing');
-  }, 250);
-  messageHint.textContent = 'Kalbim bugün de seni seçti ♥';
-  copyMessage.classList.remove('copied');
-  copyMessage.textContent = 'Mesajı Kopyala';
-});
-
-copyMessage.addEventListener('click', async () => {
-  try {
-    await navigator.clipboard.writeText(messageText.textContent);
-    copyMessage.textContent = 'Kopyalandı ✓';
-    copyMessage.classList.add('copied');
-    messageHint.textContent = 'Bu güzel cümle artık panonda ✦';
-  } catch {
-    messageHint.textContent = 'Mesajı seçip kopyalayabilirsin ♥';
-  }
-});
 
 /* ============ MEKTUP ============ */
 const envelope = document.getElementById('envelope');
 envelope.addEventListener('click', () => {
   envelope.classList.toggle('open');
   document.getElementById('envHint').textContent =
-    envelope.classList.contains('open') ? "mühürü kapat" : "mühürü aç";
+    envelope.classList.contains('open') ? "mührü kapat" : "mührü aç";
 });
 
-/* ============ MINI GAMES ============ */
-const heartArena = document.getElementById('heartArena');
-const heartStart = document.getElementById('heartStart');
-const heartScore = document.getElementById('heartScore');
-const heartTime = document.getElementById('heartTime');
-const heartResult = document.getElementById('heartResult');
-let gameTimer;
-let heartGameActive = false;
-let score = 0;
-
-function placeHeart(){
-  if (!heartGameActive) return;
-  const target = document.createElement('button');
-  target.className = 'target-heart';
-  target.type = 'button';
-  target.textContent = '♥';
-  target.setAttribute('aria-label', 'Kalbi yakala');
-  target.style.left = (8 + Math.random() * 82) + '%';
-  target.style.top = (8 + Math.random() * 76) + '%';
-  target.addEventListener('click', () => {
-    score++;
-    heartScore.textContent = score;
-    target.remove();
-    placeHeart();
-  });
-  heartArena.querySelector('.arena-message')?.remove();
-  heartArena.appendChild(target);
-}
-
-function startHeartGame(){
-  clearInterval(gameTimer);
-  score = 0;
-  let remaining = 20;
-  heartGameActive = true;
-  heartArena.classList.add('active');
-  heartScore.textContent = score;
-  heartTime.textContent = remaining;
-  heartResult.textContent = '';
-  heartArena.querySelectorAll('.target-heart').forEach(h => h.remove());
-  placeHeart();
-  heartStart.textContent = 'Yeniden Başlat';
-  gameTimer = setInterval(() => {
-    remaining--;
-    heartTime.textContent = remaining;
-    if (remaining <= 0) {
-      clearInterval(gameTimer);
-      heartGameActive = false;
-      heartArena.classList.remove('active');
-      heartArena.querySelectorAll('.target-heart').forEach(h => h.remove());
-      heartResult.classList.remove('success');
-      void heartResult.offsetWidth;
-      heartResult.classList.add('success');
-      heartResult.textContent = score >= 15 ? 'Kalbimi resmen uçurdun! 💖' : `Güzel oynadın, ${score} kalp yakaladın 💜`;
-    }
-  }, 1000);
-}
-heartStart.addEventListener('click', startHeartGame);
-
+/* ============ QUIZ ============ */
+const quizQuestions = [
+  {
+    question: 'Beni en çok ne mutlu eder?',
+    options: ['Pahalı hediyeler', 'Seninle konuşmak', 'Yalnız kalmak', 'Geç saatlere kadar çalışmak'],
+    answer: 1
+  },
+  {
+    question: 'Birlikte yapmayı en çok sevdiğimiz şeylerden biri nedir?',
+    options: ['Oyun oynamak', 'Alışveriş yapmak', 'Koşuya çıkmak', 'Yemek yapmak'],
+    answer: 0
+  },
+  {
+    question: 'Mesajlarında hangi şey kalbimi hızlandırır?',
+    options: ['Üç noktanın belirmesi', 'Uzun bekleyişler', 'Kısa cevaplar', 'Sessiz kalman'],
+    answer: 0
+  },
+  {
+    question: 'Aramızdaki mesafeye rağmen bana ne hissettiriyorsun?',
+    options: ['Yalnızlık', 'Heyecan ve yakınlık', 'Kararsızlık', 'Sıkıntı'],
+    answer: 1
+  },
+  {
+    question: 'Beni en çok hangi hayal heyecanlandırıyor?',
+    options: ['Aynı yerde buluşacağımız gün', 'Yeni bir telefon almak', 'Tek başıma seyahat etmek', 'Daha çok uyumak'],
+    answer: 0
+  }
+];
+const quizProgress = document.getElementById('quizProgress');
+const quizQuestion = document.getElementById('quizQuestion');
 const quizOptions = document.getElementById('quizOptions');
 const quizResult = document.getElementById('quizResult');
-quizOptions.addEventListener('click', e => {
-  const answer = e.target.closest('button');
-  if (!answer) return;
-  quizOptions.querySelectorAll('button').forEach(btn => btn.disabled = true);
-  answer.classList.add(answer.dataset.answer);
-  quizResult.textContent = answer.dataset.answer === 'correct'
-    ? 'Doğru! Dijital mesafeyi birlikte eğlenceyle kapatıyoruz 💖'
-    : 'Bir daha düşün... Bizim için en güzel şey birlikte vakit geçirmek!';
-});
-document.getElementById('quizReset').addEventListener('click', () => {
-  quizOptions.querySelectorAll('button').forEach(btn => {
-    btn.disabled = false;
-    btn.classList.remove('correct', 'wrong');
-  });
+const quizRestart = document.getElementById('quizRestart');
+let quizIndex = 0;
+let quizScore = 0;
+
+function showQuizQuestion(){
+  const current = quizQuestions[quizIndex];
+  quizProgress.textContent = `Soru ${quizIndex + 1} / ${quizQuestions.length}`;
+  quizQuestion.textContent = current.question;
   quizResult.textContent = '';
-});
+  quizOptions.innerHTML = '';
+  current.options.forEach((option, index) => {
+    const button = document.createElement('button');
+    button.className = 'quiz-option';
+    button.textContent = option;
+    button.addEventListener('click', () => answerQuiz(button, index));
+    quizOptions.appendChild(button);
+  });
+}
 
-/* ============ EK OYUNLAR ============ */
-const loveChoices = document.getElementById('loveChoices');
-const loveResult = document.getElementById('loveResult');
-let selectedLove = null;
-
-loveChoices.addEventListener('click', e => {
-  const choice = e.target.closest('.choice-heart');
-  if (!choice) return;
-  selectedLove = Number(choice.dataset.value);
-  loveChoices.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
-  choice.classList.add('active');
-  loveResult.textContent = 'Tahminin seçildi...';
-});
-
-document.getElementById('loveGuess').addEventListener('click', () => {
-  if (selectedLove === null) {
-    loveResult.textContent = 'Önce bir kalp seçmelisin 💜';
-    return;
+function answerQuiz(selected, answer){
+  const current = quizQuestions[quizIndex];
+  [...quizOptions.children].forEach(button => button.disabled = true);
+  if (answer === current.answer) {
+    quizScore++;
+    selected.classList.add('correct');
+    quizResult.textContent = 'Doğru cevap — beni gerçekten tanıyorsun ♥';
+  } else {
+    selected.classList.add('wrong');
+    quizOptions.children[current.answer].classList.add('correct');
+    quizResult.textContent = 'Yaklaştın, doğru cevabı da öğrendin ♥';
   }
-  loveResult.classList.remove('success');
-  void loveResult.offsetWidth;
-  loveResult.classList.add('success');
-  loveResult.textContent = selectedLove === 100
-    ? 'Doğru! Kalbim zaten tamamen senin 💖'
-    : `Yaklaştın! Gerçek cevap %100, çünkü seni seviyorum 💕`;
+  setTimeout(() => {
+    quizIndex++;
+    if (quizIndex < quizQuestions.length) showQuizQuestion();
+    else finishQuiz();
+  }, 850);
+}
+
+function finishQuiz(){
+  quizProgress.textContent = 'Test tamamlandı';
+  quizQuestion.textContent = `${quizQuestions.length} sorudan ${quizScore} doğru!`;
+  quizOptions.innerHTML = '';
+  quizResult.textContent = quizScore === quizQuestions.length
+    ? 'Kalbimin bütün cevaplarını biliyorsun ♥'
+    : 'Her cevapta birbirimizi biraz daha tanıyoruz ♥';
+  quizRestart.hidden = false;
+}
+
+quizRestart.addEventListener('click', () => {
+  quizIndex = 0;
+  quizScore = 0;
+  quizRestart.hidden = true;
+  showQuizQuestion();
 });
+showQuizQuestion();
+
+/* ============ EK ÖZELLİKLER ============ */
+const wordPool = [
+  { scrambled: 'RİMĞEAPERC', answer: 'CİĞERPAREM' },
+  { scrambled: 'MICAN', answer: 'CANIM' },
+  { scrambled: 'LİMGEVİS', answer: 'SEVGİLİM' },
+  { scrambled: 'TIMAYHA', answer: 'HAYATIM' },
+  { scrambled: 'LİGÜZEM', answer: 'GÜZELİM' },
+  { scrambled: 'MİNETAB', answer: 'BİTANEM' },
+  { scrambled: 'MÖRÜM', answer: 'ÖMRÜM' },
+  { scrambled: 'BİMKAL', answer: 'KALBİM' }
+];
+let wordRound = 0;
+const wordScramble = document.getElementById('wordScramble');
+const wordInput = document.getElementById('wordInput');
+const wordResult = document.getElementById('wordResult');
+function showWord(){ wordScramble.textContent = wordPool[wordRound].scrambled; wordInput.value = ''; wordResult.textContent = ''; }
+function normalizeWord(value){
+  return value.trim().toLocaleUpperCase('tr-TR')
+    .replace(/[İI]/g, 'I').replace(/Ğ/g, 'G').replace(/Ü/g, 'U')
+    .replace(/Ş/g, 'S').replace(/Ö/g, 'O').replace(/Ç/g, 'C');
+}
+document.getElementById('wordCheck').addEventListener('click', () => {
+  if (normalizeWord(wordInput.value) === normalizeWord(wordPool[wordRound].answer)) {
+    wordResult.textContent = 'Doğru! Kalbin kelimeyi buldu ♥';
+    wordRound = (wordRound + 1) % wordPool.length;
+    setTimeout(showWord, 900);
+  } else wordResult.textContent = 'Bir kez daha düşün, aşk çok yakın ♥';
+});
+wordInput.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('wordCheck').click(); });
+showWord();
+
+const luckyMessages = [
+  'Bugün de aklımdaki en güzel kişisin ♥',
+  'Mesafeler sevgimize yetişemez.',
+  'Seninle konuşmak günümün en güzel anı.',
+  'Kalbim seni seçti ve seçiminden hiç pişman değil.'
+];
+let luckyIndex = 0;
+function luckyMessage(){
+  document.getElementById('luckyResult').textContent = luckyMessages[luckyIndex];
+  luckyIndex = (luckyIndex + 1) % luckyMessages.length;
+}
+document.getElementById('luckyHeart').addEventListener('click', luckyMessage);
+document.getElementById('luckyHeart').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') luckyMessage(); });
+
+const dailyMessages = [
+  'Her gün seni sevmek için yeni bir sebep buluyorum.',
+  'Bugünün en güzel tesadüfü: yine aklıma gelmen.',
+  'Nerede olursan ol, kalbimde sana ayrılmış bir yer var.',
+  'Sen varsın diye sıradan günler bile güzel.'
+];
+document.getElementById('dailyMessage').textContent = dailyMessages[new Date().getDate() % dailyMessages.length];
 
 /* ============ SPOTIFY ============ */
-const spPanel = document.getElementById('sp-panel');
 const spLauncher = document.getElementById('sp-launcher');
+const spPanel = document.getElementById('sp-panel');
+const spFrame = document.getElementById('sp-frame');
+let spLoaded = false;
 
+spLauncher.addEventListener('click', () => {
+  if (!spLoaded) { spFrame.src = SPOTIFY_URL; spLoaded = true; }
+  spPanel.classList.add('open');
+  spLauncher.classList.add('hidden');
+});
 document.getElementById('sp-close').addEventListener('click', () => {
   spPanel.classList.remove('open');
   spLauncher.classList.remove('hidden');
 });
 
-spLauncher.addEventListener('click', () => {
-  spPanel.classList.add('open');
-  spLauncher.classList.add('hidden');
-});
-
-/* ============ YÜZEN KALPLER ============ */
-function startHearts(){
-  // Mobilde daha az DOM elemanı ve daha düşük animasyon yükü.
-  const interval = IS_MOBILE ? 4200 : 1400;
-  const lifetime = IS_MOBILE ? 12000 : 18000;
-  setInterval(() => {
-    if (document.hidden) return;
-    const h = document.createElement('span');
-    h.className = 'float-heart';
-    h.innerHTML = '&#9829;';
-    h.style.left = Math.random() * 100 + 'vw';
-    h.style.fontSize = (IS_MOBILE ? 12 : 12 + Math.random() * 20) + 'px';
-    h.style.animationDuration = (IS_MOBILE ? 10 : 9 + Math.random() * 8) + 's';
-    h.style.color = Math.random() < .5
-      ? 'rgba(139,92,246,.32)'
-      : 'rgba(236,72,153,.3)';
-    document.body.appendChild(h);
-    setTimeout(() => h.remove(), lifetime);
-  }, interval);
+/* ============ SCROLL REVEAL ============ */
+function revealInit(){
+  const io = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('in'), i * 90);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 }
+
+/* ============ PETALS ============ */
+const cv = document.getElementById('petals');
+const cx = cv.getContext('2d');
+let W, H;
+function resize(){ W = cv.width = innerWidth; H = cv.height = innerHeight; }
+resize();
+addEventListener('resize', resize);
+
+const PETAL_COLORS = ['rgba(255,95,158,', 'rgba(157,107,255,', 'rgba(255,154,194,', 'rgba(201,177,255,'];
+const petals = [];
+
+function spawn(y){
+  return {
+    x: Math.random() * W,
+    y: y !== undefined ? y : Math.random() * H,
+    r: 4 + Math.random() * 7,
+    vy: .35 + Math.random() * .8,
+    sway: Math.random() * Math.PI * 2,
+    swaySpeed: .008 + Math.random() * .014,
+    swayAmp: 14 + Math.random() * 30,
+    rot: Math.random() * Math.PI * 2,
+    vr: (Math.random() - .5) * .02,
+    color: PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)],
+    alpha: .18 + Math.random() * .4,
+    heart: Math.random() < .35
+  };
+}
+for (let i = 0; i < 26; i++) petals.push(spawn());
+
+function drawPetal(p){
+  cx.save();
+  cx.translate(p.x + Math.sin(p.sway) * p.swayAmp, p.y);
+  cx.rotate(p.rot);
+  cx.globalAlpha = p.alpha;
+  cx.fillStyle = p.color + '1)';
+  if (p.heart) {
+    const s = p.r * 1.15;
+    cx.beginPath();
+    cx.moveTo(0, s * .35);
+    cx.bezierCurveTo(-s, -s * .45, -s * .5, -s * 1.1, 0, -s * .5);
+    cx.bezierCurveTo(s * .5, -s * 1.1, s, -s * .45, 0, s * .35);
+    cx.fill();
+  } else {
+    cx.beginPath();
+    cx.ellipse(0, 0, p.r, p.r * .55, 0, 0, Math.PI * 2);
+    cx.fill();
+  }
+  cx.restore();
+}
+
+function loopPetals(){
+  cx.clearRect(0, 0, W, H);
+  for (let i = 0; i < petals.length; i++) {
+    const p = petals[i];
+    p.y += p.vy;
+    p.sway += p.swaySpeed;
+    p.rot += p.vr;
+    if (p.y > H + 30) petals[i] = spawn(-30);
+    drawPetal(p);
+  }
+  requestAnimationFrame(loopPetals);
+}
+loopPetals();
 </script>
 </body>
 </html>
