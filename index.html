@@ -591,6 +591,8 @@ footer{text-align:center;padding:90px 24px 130px;position:relative}
       <div class="c-cell"><b id="cMin">0</b><small>Dakika</small></div>
       <div class="c-cell"><b id="cSec">0</b><small>Saniye</small></div>
     </div>
+
+    <a href="#olcum" class="scroll-cue reveal"><span>keşfet</span><span class="line"></span></a>
   </section>
 
   <!-- AŞK ÖLÇER -->
@@ -1111,7 +1113,7 @@ function spawn(y){
     vr: (Math.random() - .5) * .02,
     color: PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)],
     alpha: .18 + Math.random() * .4,
-    heart: Math.random() < .35
+    heart: true
   };
 }
 for (let i = 0; i < 26; i++) petals.push(spawn());
