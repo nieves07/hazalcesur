@@ -406,8 +406,11 @@ input[type=range]::-moz-range-thumb{
 .timeline-item p{margin-top:5px;color:#cbbde4;font-size:13.5px;line-height:1.65}
 .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:56px}
 .gallery figure{margin:0;aspect-ratio:1;overflow:hidden;border-radius:16px;border:1px solid var(--glass-line);background:linear-gradient(135deg,rgba(157,107,255,.32),rgba(255,95,158,.25));display:grid;place-items:center;cursor:pointer;position:relative}
-.gallery figure::after{content:'♥';font-size:45px;color:rgba(255,255,255,.72);text-shadow:0 0 20px rgba(255,95,158,.8)}
-.gallery figcaption{position:absolute;bottom:0;left:0;right:0;padding:10px;background:rgba(21,13,36,.72);font-size:11px;letter-spacing:.08em;color:var(--blush)}
+.gallery figure::after{content:'♥';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:45px;color:rgba(255,255,255,.72);text-shadow:0 0 20px rgba(255,95,158,.8);opacity:0;transition:opacity .3s;pointer-events:none}
+.gallery figure:hover::after,.gallery figure:focus::after{opacity:1}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease,filter .5s ease}
+.gallery figure:hover img,.gallery figure:focus img{transform:scale(1.06);filter:brightness(.72)}
+.gallery figcaption{position:absolute;bottom:0;left:0;right:0;padding:10px;background:rgba(21,13,36,.78);font-size:11px;letter-spacing:.08em;color:var(--blush);z-index:1}
 @media (max-width:640px){.nav{overflow-x:auto;max-width:70vw;padding-bottom:3px}.timeline-item{grid-template-columns:1fr;gap:7px}.gallery{grid-template-columns:repeat(2,1fr)}}
 
 /* ============================================================
@@ -718,9 +721,18 @@ footer{text-align:center;padding:90px 24px 130px;position:relative}
         <article class="timeline-item reveal"><time>Bugün</time><div><h3>Hikâyemiz devam ediyor</h3><p>Mesafeler olsa da kalplerimiz aynı yerde atmaya devam ediyor.</p></div></article>
       </div>
       <div class="gallery">
-        <figure class="reveal" tabindex="0"><figcaption>Birlikte güzel anlar</figcaption></figure>
-        <figure class="reveal" tabindex="0"><figcaption>Kalbimin en güzel köşesi</figcaption></figure>
-        <figure class="reveal" tabindex="0"><figcaption>Gelecek güzel günlere</figcaption></figure>
+        <figure class="reveal" tabindex="0">
+          <img src="https://uploads.onecompiler.io/44ve7ewwc/454wffju6/832800028_2289988065169288_4043153114325772429_n.jpg" alt="Cesur ve Hazal'ın birlikte güzel bir anı">
+          <figcaption>Birlikte güzel anlar</figcaption>
+        </figure>
+        <figure class="reveal" tabindex="0">
+          <img src="https://uploads.onecompiler.io/44ve7ewwc/454wffju6/Screenshot_9.png
+" alt="Kalbimin en güzel köşesi">
+          <figcaption>Kalbimin en güzel köşesi</figcaption>
+        </figure>
+        <figure class="reveal" tabindex="0">
+          <figcaption>Gelecek güzel günlere</figcaption>
+        </figure>
       </div>
     </div>
   </section>
